@@ -1,14 +1,4 @@
-/*!
-  =========================================================
-  * Muse Ant Design Dashboard - v1.0.0
-  =========================================================
-  * Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-  * Copyright 2021 Creative Tim (https://www.creative-tim.com)
-  * Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-  * Coded by Creative Tim
-  =========================================================
-  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
+
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -16,6 +6,8 @@ import { Layout, Drawer, Affix } from "antd";
 import Sidenav from "./Sidenav";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const { Header: AntHeader, Content, Sider } = Layout;
 
@@ -25,7 +17,8 @@ function Main({ children }) {
   const [sidenavColor, setSidenavColor] = useState("#1890ff");
   const [sidenavType, setSidenavType] = useState("transparent");
   const [fixed, setFixed] = useState(false);
-
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  const history = useHistory();
   const openDrawer = () => setVisible(!visible);
   const handleSidenavType = (type) => setSidenavType(type);
   const handleSidenavColor = (color) => setSidenavColor(color);
@@ -41,6 +34,12 @@ function Main({ children }) {
       setPlacement("right");
     }
   }, [pathname]);
+
+  useEffect(() => {
+    if (!currentUser) {
+      history.push("/sign-in");
+    }
+  }, [currentUser, history]);
 
   return (
     <Layout

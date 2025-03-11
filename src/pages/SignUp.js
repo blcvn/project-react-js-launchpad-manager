@@ -6,6 +6,7 @@ import {
   Input,
   Layout,
   Menu,
+  notification,
   Typography,
 } from "antd";
 import React, { Component } from "react";
@@ -20,14 +21,31 @@ import {
   TwitterOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import userAPI from "../api/user";
+import authAPI from "../api/auth";
+import { withRouter } from "react-router-dom";
 
 const { Title } = Typography;
 const { Header, Footer, Content } = Layout;
 
-export default class SignUp extends Component {
+class SignUp extends Component {
   render() {
     const onFinish = (values) => {
-      console.log("Success:", values);
+      authAPI
+        .register(values)
+        .then(() => {
+          notification.success({
+            message: "Register successful",
+            description: "You can now login with your new account.",
+          });
+          this.props.history.push("/sign-in");
+        })
+        .catch((err) => {
+          notification.error({
+            message: "Register failed",
+            description: err.message,
+          });
+        });
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -81,25 +99,44 @@ export default class SignUp extends Component {
                   name="name"
                   rules={[
                     { required: true, message: "Please input your username!" },
+                    {
+                      min: 3,
+                      message: "Username must be at least 3 characters!",
+                    },
+                    {
+                      max: 20,
+                      message: "Username cannot exceed 20 characters!",
+                    },
                   ]}
                 >
                   <Input placeholder="Name" />
                 </Form.Item>
+
                 <Form.Item
                   name="email"
                   rules={[
                     { required: true, message: "Please input your email!" },
+                    { type: "email", message: "Please enter a valid email!" },
                   ]}
                 >
                   <Input placeholder="Email" />
                 </Form.Item>
+
                 <Form.Item
                   name="password"
                   rules={[
                     { required: true, message: "Please input your password!" },
+                    {
+                      min: 6,
+                      message: "Password must be at least 6 characters!",
+                    },
+                    {
+                      max: 50,
+                      message: "Password cannot exceed 50 characters!",
+                    },
                   ]}
                 >
-                  <Input placeholder="Password" />
+                  <Input.Password placeholder="Password" />
                 </Form.Item>
 
                 <Form.Item name="remember" valuePropName="checked">
@@ -174,3 +211,4 @@ export default class SignUp extends Component {
     );
   }
 }
+export default withRouter(SignUp);

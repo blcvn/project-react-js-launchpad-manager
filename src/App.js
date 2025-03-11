@@ -1,4 +1,3 @@
-
 import "antd/dist/antd.css";
 import { Redirect, Route, Switch } from "react-router-dom";
 import "./assets/styles/main.css";
@@ -11,6 +10,8 @@ import Rtl from "./pages/Rtl";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Tables from "./pages/Tables";
+import User from "./pages/User";
+import Project from "./pages/Project";
 
 function App() {
   return (
@@ -20,12 +21,15 @@ function App() {
         <Route path="/sign-in" exact component={SignIn} />
         <Main>
           <Route exact path="/dashboard" component={Home} />
+          <Route exact path="/user" component={User} />
+          <Route exact path="/project" component={Project} />
+
           <Route exact path="/tables" component={Tables} />
           <Route exact path="/billing" component={Billing} />
           <Route exact path="/rtl" component={Rtl} />
           <Route exact path="/profile" component={Profile} />
-          <Redirect from="*" to="/dashboard" />
         </Main>
+        <Redirect from="*" to="/sign-in" />
       </Switch>
     </div>
   );
