@@ -1,4 +1,4 @@
-import { DislikeFilled, LikeFilled } from "@ant-design/icons";
+import { DislikeFilled, EyeFilled, LikeFilled } from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -10,11 +10,13 @@ import {
   Tooltip,
   notification,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectAPI from "../api/project";
 import { search, setParams } from "../stores/features/project/slice";
-import CreateProjectModal from "./components/CreateProjectModel";
+import CreateProjectModal from "./components/CreateProjectModal";
+import AddContributorModal from "./components/AddContributorModal";
+import { useHistory } from "react-router-dom";
 const statusMapping = {
   1: { text: "Pending", color: "default" },
   2: { text: "Rejected", color: "red" },
@@ -24,14 +26,16 @@ const statusMapping = {
   6: { text: "Expired", color: "orange" },
 };
 
-
 function Project() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const addRef = useRef();
 
+  const history = useHistory();
   const dispatch = useDispatch();
   const { data, params, status, totalElements } = useSelector(
     (state) => state.project
   );
+
   const handleChangePagination = (page, pageSize) => {
     dispatch(setParams({ page: page - 1, size: pageSize }));
   };
@@ -137,6 +141,15 @@ function Project() {
               />{" "}
             </Col>
           </Tooltip>
+          <Tooltip title="View Detail">
+            <Col>
+              <EyeFilled
+                onClick={() => {
+                  history.push(`/project/${record.id}`);
+                }}
+              />
+            </Col>
+          </Tooltip>
         </Row>
       ),
     },
@@ -183,6 +196,7 @@ function Project() {
         </Col>
       </Row>
       <CreateProjectModal visible={isModalOpen} onClose={onClose} />
+      <AddContributorModal ref={addRef} />
     </div>
   );
 }

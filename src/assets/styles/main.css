@@ -3039,4 +3039,11 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 
 .disable {
   opacity: 50%;
+  pointer-events: none !important;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.w-10 {
+  width: 10rem;
 }

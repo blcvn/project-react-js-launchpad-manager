@@ -12,6 +12,7 @@ import SignUp from "./pages/SignUp";
 import Tables from "./pages/Tables";
 import User from "./pages/User";
 import Project from "./pages/Project";
+import ProjectDetail from "./pages/ProjectDetail";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route exact path="/dashboard" component={Home} />
           <Route exact path="/user" component={User} />
           <Route exact path="/project" component={Project} />
+          <Route exact path="/project/:projectId" component={ProjectDetail} />
 
           <Route exact path="/tables" component={Tables} />
           <Route exact path="/billing" component={Billing} />
