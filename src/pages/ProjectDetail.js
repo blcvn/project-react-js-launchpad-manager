@@ -16,6 +16,7 @@ import { useHistory, useParams } from "react-router-dom";
 import contributorAPI from "../api/contributor";
 import projectAPI from "../api/project";
 import { BackwardOutlined } from "@ant-design/icons";
+import { PROJECT_STATUS_MAPPING } from "../utils/mapping";
 
 const ProjectDetail = () => {
   const { projectId } = useParams(); // Lấy projectId từ URL
@@ -84,13 +85,15 @@ const ProjectDetail = () => {
       })
       .catch(() => message.error("Failed to add contributor"));
   };
+
+  const statusMapping = PROJECT_STATUS_MAPPING[project.status] || {};
   return (
     <Card
       title={
-          <Button onClick={handleBack}>
-            <BackwardOutlined />
-            Back
-          </Button>
+        <Button onClick={handleBack}>
+          <BackwardOutlined />
+          Back
+        </Button>
       }
       bordered={false}
     >
@@ -102,9 +105,7 @@ const ProjectDetail = () => {
         </Descriptions.Item>
         <Descriptions.Item label="Hash">{project.hash}</Descriptions.Item>
         <Descriptions.Item label="Status">
-          <Tag color={project.status === 1 ? "green" : "red"}>
-            {project.status === 1 ? "Active" : "Inactive"}
-          </Tag>
+          <Tag color={statusMapping.color}>{statusMapping.text}</Tag>
         </Descriptions.Item>
         <Descriptions.Item label="Start Time">
           {moment(project.startTime).format("YYYY-MM-DD HH:mm:ss")}

@@ -21,7 +21,7 @@ class SignIn extends Component {
   onFinish = (values) => {
     this.props.login(values).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        this.props.history.push("/dashboard");
+        this.props.history.push("/profile");
       }
     });
   };

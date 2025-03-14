@@ -17,14 +17,7 @@ import { search, setParams } from "../stores/features/project/slice";
 import CreateProjectModal from "./components/CreateProjectModal";
 import AddContributorModal from "./components/AddContributorModal";
 import { useHistory } from "react-router-dom";
-const statusMapping = {
-  1: { text: "Pending", color: "default" },
-  2: { text: "Rejected", color: "red" },
-  3: { text: "Approved", color: "blue" },
-  4: { text: "Finalized", color: "green" },
-  5: { text: "Active", color: "cyan" },
-  6: { text: "Expired", color: "orange" },
-};
+import { PROJECT_STATUS_MAPPING } from "../utils/mapping";
 
 function Project() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,7 +57,7 @@ function Project() {
       dataIndex: "status",
       key: "status",
       render: (status) => {
-        const { text, color } = statusMapping[status] || {
+        const { text, color } = PROJECT_STATUS_MAPPING[status] || {
           text: "Unknown",
           color: "gray",
         };
@@ -105,9 +98,6 @@ function Project() {
                     .accept(record.id)
                     .then(() => {
                       notification.success({ message: "Accept successful" });
-                      setTimeout(() => {
-                        dispatch(search());
-                      }, 4000);
                     })
                     .catch((err) => {
                       notification.error({
@@ -157,6 +147,10 @@ function Project() {
 
   useEffect(() => {
     dispatch(search());
+    const intervalRef = setInterval(() => {
+      dispatch(search());
+    }, 1000);
+    return () => clearInterval(intervalRef);
   }, [dispatch]);
 
   return (
