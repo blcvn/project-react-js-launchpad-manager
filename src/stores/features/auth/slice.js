@@ -34,7 +34,7 @@ export const login = createAsyncThunk(
 
 
 export const loginWithGoogle = createAsyncThunk(
-  "auth/login",
+  "auth/login-with-google",
   async (values, { rejectWithValue }) => {
     try {
       const res = await authAPI.loginWithGoogle(values);

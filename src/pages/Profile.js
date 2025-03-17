@@ -153,7 +153,6 @@ function Profile() {
         className="profile-nav-bg"
         style={{ backgroundImage: "url(" + BgProfile + ")" }}
       ></div>
-
       <Card
         className="card-profile-head"
         bodyStyle={{ display: "none" }}

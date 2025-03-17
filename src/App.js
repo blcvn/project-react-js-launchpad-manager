@@ -18,14 +18,21 @@ function App() {
         <Route path="/sign-up" exact component={SignUp} />
         <Route path="/sign-in" exact component={SignIn} />
         <Main>
-          <Route exact path="/dashboard" component={Home} />
-          <Route exact path="/user" component={User} />
-          <Route exact path="/project" component={Project} />
-          <Route exact path="/project/:projectId" component={ProjectDetail} />
-          <Route exact path="/profile" component={Profile} />
+          <Switch>
+            <Route exact path="/dashboard" component={Home} />
+            <Route exact path="/user" component={User} />
+            <Route exact path="/project" component={Project} />
+            <Route exact path="/project/:projectId" component={ProjectDetail} />
+            <Route exact path="/profile" component={Profile} />
+            <Route path="*">
+              <Redirect to="/sign-in" />
+            </Route>{" "}
+          </Switch>
         </Main>
+        <Route path="*">
+          <Redirect to="/sign-in" />
+        </Route>{" "}
       </Switch>
-      <Redirect to="/sign-in" /> {/* This will handle incorrect paths */}
     </div>
   );
 }
