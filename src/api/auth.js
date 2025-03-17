@@ -17,6 +17,12 @@ const login = ({ email, password }) => {
   });
 };
 
-const authAPI = { login, register };
+const loginWithGoogle = ({ token }) => {
+  return request.post(`${PREFIX}/login-with-google`, {
+    token
+  });
+};
+
+const authAPI = { login, register,loginWithGoogle };
 
 export default authAPI;

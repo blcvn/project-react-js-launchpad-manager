@@ -32,6 +32,23 @@ export const login = createAsyncThunk(
   }
 );
 
+
+export const loginWithGoogle = createAsyncThunk(
+  "auth/login",
+  async (values, { rejectWithValue }) => {
+    try {
+      const res = await authAPI.loginWithGoogle(values);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ user: res }));
+      request.token = res.accessToken;
+      notification.success({ message: "Login successful" });
+      return res;
+    } catch (err) {
+      notification.error({ message: "Login failed", description: err.message });
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 const initialState = {
   currentUser: loadUserFromLocalStorage(),
   status: "idle",

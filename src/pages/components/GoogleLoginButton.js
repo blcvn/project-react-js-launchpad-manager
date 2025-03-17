@@ -1,18 +1,24 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import logo3 from "../../assets/images/Google__G__Logo.svg.png";
 import { Button } from "antd";
+import logo3 from "../../assets/images/Google__G__Logo.svg.png";
+import { loginWithGoogle } from "../../stores/features/auth/slice";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 const GoogleLoginButton = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const googleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-      console.log("Google Access Token:", tokenResponse.access_token);
 
-      // Fetch user profile data from Google API
-      fetch(
-        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`
-      )
-        .then((res) => res.json())
-        .then((user) => console.log("Google User Info:", user))
-        .catch((err) => console.error("Error fetching user info:", err));
+      dispatch(
+        loginWithGoogle({
+          token: tokenResponse.access_token,
+        })
+      ).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          history.push("/profile");
+        }
+      });
     },
     onError: () => console.log("Google Login Failed"),
   });

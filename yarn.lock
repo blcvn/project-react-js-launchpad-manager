@@ -11132,11 +11132,7 @@ resolve@1.18.1, resolve@^1.10.0, resolve@^1.12.0, resolve@^1.14.2, resolve@^1.17
     is-core-module "^2.0.0"
     path-parse "^1.0.6"
 
-<<<<<<< HEAD
-resolve@^1.10.0, resolve@^1.12.0, resolve@^1.14.2, resolve@^1.17.0, resolve@^1.18.1, resolve@^1.19.0, resolve@^1.20.0, resolve@^1.22.4, resolve@^1.3.2:
-=======
-resolve@^1.19.0, resolve@^1.22.4:
->>>>>>> 4e891d8 (update google login)
+resolve@^1.19.0, resolve@^1.20.0, resolve@^1.22.4:
   version "1.22.10"
   resolved "https://registry.npmjs.org/resolve/-/resolve-1.22.10.tgz"
   integrity sha512-NPRy+/ncIMeDlTAsuqwKIiferiawhefFJtkNSW0qZJEqMEb+qBt/77B/jGeeek+F0uOeN05CDa6HXbbIgtVX4w==
