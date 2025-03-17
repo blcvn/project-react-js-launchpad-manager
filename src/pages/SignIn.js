@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import signinbg from "../assets/images/img-signin.jpg";
 import { login } from "../stores/features/auth/slice";
+import GoogleLoginButton from "./components/GoogleLoginButton";
 
 const { Title } = Typography;
 const { Content } = Layout;
@@ -39,9 +40,20 @@ class SignIn extends Component {
                 md={{ span: 12 }}
               >
                 <Title className="mb-15">Sign In</Title>
+
                 <Title className="font-regular text-muted" level={5}>
                   Enter your email and password to sign in
                 </Title>
+                <div
+                  className="sign-in-gateways"
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    display: "flex",
+                  }}
+                >
+                  <GoogleLoginButton />
+                </div>
                 <Form
                   onFinish={this.onFinish}
                   layout="vertical"

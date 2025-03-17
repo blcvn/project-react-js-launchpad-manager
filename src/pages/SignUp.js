@@ -10,9 +10,6 @@ import {
   Typography,
 } from "antd";
 import React, { Component } from "react";
-import logo3 from "../assets/images/Google__G__Logo.svg.png";
-import logo2 from "../assets/images/logo-apple.svg";
-import logo1 from "../assets/images/logos-facebook.svg";
 
 import {
   DribbbleOutlined,
@@ -71,21 +68,9 @@ class SignUp extends Component {
 
             <Card
               className="card-signup header-solid h-full ant-card pt-0"
-              title={<h5>Register With</h5>}
+              title={<h5>Create Account</h5>}
               bordered="false"
             >
-              <div className="sign-up-gateways">
-                <Button type="false">
-                  <img src={logo1} alt="logo 1" />
-                </Button>
-                <Button type="false">
-                  <img src={logo2} alt="logo 2" />
-                </Button>
-                <Button type="false">
-                  <img src={logo3} alt="logo 3" />
-                </Button>
-              </div>
-              <p className="text-center my-25 font-semibold text-muted">Or</p>
               <Form
                 name="basic"
                 initialValues={{ remember: true }}
@@ -164,6 +149,7 @@ class SignUp extends Component {
               </p>
             </Card>
           </Content>
+
           <Footer>
             <Menu mode="horizontal">
               <Menu.Item>Company</Menu.Item>
