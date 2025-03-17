@@ -1,21 +1,18 @@
-import { useState } from "react";
 import {
+  Button,
   Card,
   Col,
-  Row,
-  Table,
-  Typography,
-  Pagination,
-  Button,
-  Modal,
   Form,
   Input,
-  Tag,
+  Modal,
+  Pagination,
+  Row,
+  Table,
+  Tag
 } from "antd";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setParams, search } from "../stores/features/user/slice";
-import { createReviewer } from "../stores/features/user/slice"; // Action tạo reviewer
-import { useEffect } from "react";
+import { createReviewer, search, setParams } from "../stores/features/user/slice";
 
 const roleColors = {
   1: { text: "Admin", color: "red" },

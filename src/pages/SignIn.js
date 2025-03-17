@@ -30,6 +30,7 @@ class SignIn extends Component {
     return (
       <>
         <Layout className="layout-default layout-signin">
+
           <Content className="signin">
             <Row gutter={[24, 0]} justify="space-around">
               <Col

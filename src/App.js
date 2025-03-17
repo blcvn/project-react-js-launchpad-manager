@@ -22,14 +22,10 @@ function App() {
           <Route exact path="/user" component={User} />
           <Route exact path="/project" component={Project} />
           <Route exact path="/project/:projectId" component={ProjectDetail} />
-
-          {/* <Route exact path="/tables" component={Tables} />
-          <Route exact path="/billing" component={Billing} />
-          <Route exact path="/rtl" component={Rtl} /> */}
           <Route exact path="/profile" component={Profile} />
         </Main>
-        <Redirect from="*" to="/sign-in" />
       </Switch>
+      <Redirect to="/sign-in" /> {/* This will handle incorrect paths */}
     </div>
   );
 }

@@ -20,10 +20,8 @@ import {
   InstagramOutlined,
   TwitterOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import userAPI from "../api/user";
+import { Link, withRouter } from "react-router-dom";
 import authAPI from "../api/auth";
-import { withRouter } from "react-router-dom";
 
 const { Title } = Typography;
 const { Header, Footer, Content } = Layout;

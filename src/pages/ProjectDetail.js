@@ -1,3 +1,4 @@
+import { BackwardOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -7,15 +8,13 @@ import {
   message,
   Spin,
   Table,
-  Tag,
-  Tooltip,
+  Tag
 } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import contributorAPI from "../api/contributor";
 import projectAPI from "../api/project";
-import { BackwardOutlined } from "@ant-design/icons";
 import { PROJECT_STATUS_MAPPING } from "../utils/mapping";
 
 const ProjectDetail = () => {
