@@ -143,9 +143,8 @@ function Project() {
       render: (_, record) => (
         <Row justify={"start"} gutter={[24, 24]}>
           <Tooltip title="Approve">
-            <Col className={record.status !== 1 ? "disable" : ""}>
+            <Col>
               <LikeFilled
-                disabled={record.status !== 1}
                 onClick={() => {
                   projectAPI
                     .accept(record.id)
@@ -164,9 +163,8 @@ function Project() {
           </Tooltip>
           <Tooltip title="Reject">
             {" "}
-            <Col className={record.status !== 1 ? "disable" : ""}>
+            <Col>
               <DislikeFilled
-                disabled={record.status !== 1}
                 onClick={() => {
                   projectAPI
                     .reject(record.id)

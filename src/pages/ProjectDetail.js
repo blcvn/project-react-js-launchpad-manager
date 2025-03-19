@@ -1,11 +1,11 @@
 import { BackwardOutlined } from "@ant-design/icons";
 import { Button, Card, Descriptions, Spin, Table, Tag } from "antd";
+import { create } from "ipfs-http-client";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import projectAPI from "../api/project";
 import { PROJECT_STATUS_MAPPING } from "../utils/mapping";
-import { create } from "ipfs-http-client";
 
 const ipfs = create({ url: process.env.REACT_APP_IPFS_URL, protocol: "https" });
 const ProjectDetail = () => {
@@ -15,7 +15,9 @@ const ProjectDetail = () => {
   const [loading, setLoading] = useState(true);
 
   const [contributors, setContributors] = useState([]);
-
+  const [cidData, setCidData] = useState(null);
+  const [logoUrl, setLogoUrl] = useState("");
+  const [pdfUrl, setPdfUrl] = useState("");
   const history = useHistory();
 
   useEffect(() => {
@@ -41,13 +43,37 @@ const ProjectDetail = () => {
       return null;
     }
   };
-  
+
+  const loadImgURL = async (cid, mime, limit) => {
+    debugger;
+    if (cid == "" || cid == null || cid == undefined) {
+      return;
+    }
+    const content = [];
+    for await (const chunk of ipfs.cat(cid, { length: limit })) {
+      content.push(chunk);
+    }
+    return URL.createObjectURL(new Blob(content, { type: mime }));
+  };
 
   useEffect(() => {
     const getFile = async () => {
       if (project && project.cid) {
         const jsonData = await fetchJsonByHash(project.cid);
-        console.log("Fetched JSON data:", jsonData);
+        setCidData(jsonData);
+
+        if (jsonData.logoCid) {
+          const logoContent = await loadImgURL(
+            jsonData.logoCid,
+            "image/png",
+            524288
+          );
+          setLogoUrl(logoContent);
+        }
+        if (jsonData.pdfCid) {
+          // const pdfContent = await loadImgURL(jsonData.pdfCid);
+          setPdfUrl(jsonData.pdfCid);
+        }
       }
     };
     getFile();
@@ -71,6 +97,7 @@ const ProjectDetail = () => {
   };
 
   const statusMapping = PROJECT_STATUS_MAPPING[project.status] || {};
+  console.log(`${process.env.REACT_APP_IPFS_URL}/ipfs/` + pdfUrl)
   return (
     <Card
       title={
@@ -123,6 +150,20 @@ const ProjectDetail = () => {
         </Descriptions.Item>
         <Descriptions.Item label="Release On-Chain">
           {project.releaseOnChain ? "Yes" : "No"}
+        </Descriptions.Item>
+        {logoUrl && (
+          <Descriptions.Item label="Logo">
+            <img
+              src={logoUrl}
+              alt="Project Logo"
+              style={{ maxWidth: "100px" }}
+            />
+          </Descriptions.Item>
+        )}
+        <Descriptions.Item label="PDF">
+          {/* <div>
+            <PdfViewer pdfFile={"https://ipfs.io/ipfs/" + pdfUrl} />
+          </div> */}
         </Descriptions.Item>
       </Descriptions>
       <h2 style={{ marginTop: 20 }}>Contributors</h2>
