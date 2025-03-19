@@ -48,11 +48,6 @@ function Project() {
       key: "id",
     },
     {
-      title: "Project Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
       title: "Status",
       dataIndex: "status",
       key: "status",
@@ -74,15 +69,73 @@ function Project() {
       dataIndex: "endTime",
       key: "endTime",
     },
+
     {
-      title: "Token",
-      dataIndex: "tokenName",
-      key: "tokenName",
+      title: "Blockchain ID",
+      dataIndex: "blockchainId",
+      key: "blockchainId",
     },
     {
-      title: "Total Supply",
-      dataIndex: "totalSupply",
-      key: "totalSupply",
+      title: "CID",
+      dataIndex: "cid",
+      key: "cid",
+    },
+    {
+      title: "Token Address",
+      dataIndex: "tokenAddress",
+      key: "tokenAddress",
+    },
+    {
+      title: "Total Amount",
+      dataIndex: "totalAmount",
+      key: "totalAmount",
+      render: (totalAmount) => totalAmount / 1e18,
+    },
+    {
+      title: "Pool Address",
+      dataIndex: "poolAddress",
+      key: "poolAddress",
+    },
+    {
+      title: "Owner",
+      dataIndex: "owner",
+      key: "owner",
+    },
+    {
+      title: "Accept Off Chain",
+      dataIndex: "acceptOffChain",
+      key: "acceptOffChain",
+      render: (acceptOffChain) => (acceptOffChain ? "Yes" : "No"),
+    },
+    {
+      title: "Reject Off Chain",
+      dataIndex: "rejectOffChain",
+      key: "rejectOffChain",
+      render: (rejectOffChain) => (rejectOffChain ? "Yes" : "No"),
+    },
+    {
+      title: "Accept On Chain",
+      dataIndex: "acceptOnChain",
+      key: "acceptOnChain",
+      render: (acceptOnChain) => (acceptOnChain ? "Yes" : "No"),
+    },
+    {
+      title: "Reject On Chain",
+      dataIndex: "rejectOnChain",
+      key: "rejectOnChain",
+      render: (rejectOnChain) => (rejectOnChain ? "Yes" : "No"),
+    },
+    {
+      title: "Release Off Chain",
+      dataIndex: "releaseOffChain",
+      key: "releaseOffChain",
+      render: (releaseOffChain) => (releaseOffChain ? "Yes" : "No"),
+    },
+    {
+      title: "Release On Chain",
+      dataIndex: "releaseOnChain",
+      key: "releaseOnChain",
+      render: (releaseOnChain) => (releaseOnChain ? "Yes" : "No"),
     },
     {
       title: "Action",
