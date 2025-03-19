@@ -60,9 +60,10 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      localStorage.clear();
       state.currentUser = null;
       state.status = "idle";
+      window.location.href = "/sign-in";
     },
   },
   extraReducers: (builder) => {

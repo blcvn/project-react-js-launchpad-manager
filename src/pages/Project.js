@@ -147,10 +147,10 @@ function Project() {
 
   useEffect(() => {
     dispatch(search());
-    const intervalRef = setInterval(() => {
-      dispatch(search());
-    }, 1000);
-    return () => clearInterval(intervalRef);
+    // const intervalRef = setInterval(() => {
+    //   dispatch(search());
+    // }, 1000);
+    // return () => clearInterval(intervalRef);
   }, [dispatch]);
 
   return (
