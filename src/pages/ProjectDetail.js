@@ -45,7 +45,6 @@ const ProjectDetail = () => {
   };
 
   const loadImgURL = async (cid, mime, limit) => {
-    debugger;
     if (cid == "" || cid == null || cid == undefined) {
       return;
     }
@@ -56,6 +55,19 @@ const ProjectDetail = () => {
     return URL.createObjectURL(new Blob(content, { type: mime }));
   };
 
+  const downloadFile = async (cid) => {
+    try {
+      const chunks = [];
+      for await (const chunk of ipfs.cat(cid)) {
+        chunks.push(chunk);
+      }
+      const blob = new Blob(chunks, { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
   useEffect(() => {
     const getFile = async () => {
       if (project && project.cid) {
@@ -71,8 +83,7 @@ const ProjectDetail = () => {
           setLogoUrl(logoContent);
         }
         if (jsonData.pdfCid) {
-          // const pdfContent = await loadImgURL(jsonData.pdfCid);
-          setPdfUrl(jsonData.pdfCid);
+          downloadFile(jsonData.pdfCid);
         }
       }
     };
@@ -97,7 +108,6 @@ const ProjectDetail = () => {
   };
 
   const statusMapping = PROJECT_STATUS_MAPPING[project.status] || {};
-  console.log(`${process.env.REACT_APP_IPFS_URL}/ipfs/` + pdfUrl)
   return (
     <Card
       title={
@@ -161,6 +171,7 @@ const ProjectDetail = () => {
           </Descriptions.Item>
         )}
         <Descriptions.Item label="PDF">
+          <a href={pdfUrl}> View pdf</a>
           {/* <div>
             <PdfViewer pdfFile={"https://ipfs.io/ipfs/" + pdfUrl} />
           </div> */}
