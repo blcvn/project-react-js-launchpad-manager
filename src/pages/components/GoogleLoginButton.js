@@ -9,14 +9,15 @@ const GoogleLoginButton = () => {
   const history = useHistory();
   const googleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-
       dispatch(
         loginWithGoogle({
           token: tokenResponse.access_token,
         })
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          history.push("/profile");
+          setTimeout(() => {
+            history.push("/profile");
+          }, 100);
         }
       });
     },

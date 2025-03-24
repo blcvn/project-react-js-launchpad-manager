@@ -1,4 +1,9 @@
-import { DislikeFilled, EyeFilled, LikeFilled } from "@ant-design/icons";
+import {
+  DislikeFilled,
+  EyeFilled,
+  ForwardOutlined,
+  LikeFilled,
+} from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -40,12 +45,83 @@ function Project() {
   const handleCreateNewProject = () => {
     setIsModalOpen(true);
   };
+  const handleAccept = (id) => () => {
+    projectAPI
+      .accept(id)
+      .then(() => {
+        notification.success({ message: "Accept successful" });
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Accept failed",
+          description: err.message,
+        });
+      });
+  };
+  const handleReject = (id) => () => {
+    projectAPI
+      .reject(id)
+      .then(() => {
+        notification.success({ message: "Reject successful" });
+        dispatch(search());
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Reject failed",
+          description: err.message,
+        });
+      });
+  };
+  const handleRelease = (id) => () => {
+    projectAPI
+      .release(id)
+      .then(() => {
+        notification.success({ message: "Release successful" });
+        dispatch(search());
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Release failed",
+          description: err.message,
+        });
+      });
+  };
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: "Action",
+      key: "action",
+      width: "200px",
+      fixed: true,
+      render: (_, record) => (
+        <div className="d-flex justify-content-center gap-2">
+          <div>
+            <Tooltip title="View Detail">
+              <EyeFilled
+                onClick={() => {
+                  history.push(`/project/${record.id}`);
+                }}
+              />
+            </Tooltip>
+          </div>
+          <div>
+            <Tooltip title="Approve">
+              <LikeFilled onClick={handleAccept(record.id)} />{" "}
+            </Tooltip>
+          </div>
+          <div>
+            <Tooltip title="Reject">
+              {" "}
+              <DislikeFilled onClick={handleReject(record.id)} />{" "}
+            </Tooltip>
+          </div>
+          <div>
+            <Tooltip title="Release">
+              <ForwardOutlined onClick={handleRelease(record.id)} />
+            </Tooltip>
+          </div>
+        </div>
+      ),
     },
     {
       title: "Status",
@@ -101,99 +177,42 @@ function Project() {
       dataIndex: "owner",
       key: "owner",
     },
-    {
-      title: "Accept Off Chain",
-      dataIndex: "acceptOffChain",
-      key: "acceptOffChain",
-      render: (acceptOffChain) => (acceptOffChain ? "Yes" : "No"),
-    },
-    {
-      title: "Reject Off Chain",
-      dataIndex: "rejectOffChain",
-      key: "rejectOffChain",
-      render: (rejectOffChain) => (rejectOffChain ? "Yes" : "No"),
-    },
-    {
-      title: "Accept On Chain",
-      dataIndex: "acceptOnChain",
-      key: "acceptOnChain",
-      render: (acceptOnChain) => (acceptOnChain ? "Yes" : "No"),
-    },
-    {
-      title: "Reject On Chain",
-      dataIndex: "rejectOnChain",
-      key: "rejectOnChain",
-      render: (rejectOnChain) => (rejectOnChain ? "Yes" : "No"),
-    },
-    {
-      title: "Release Off Chain",
-      dataIndex: "releaseOffChain",
-      key: "releaseOffChain",
-      render: (releaseOffChain) => (releaseOffChain ? "Yes" : "No"),
-    },
-    {
-      title: "Release On Chain",
-      dataIndex: "releaseOnChain",
-      key: "releaseOnChain",
-      render: (releaseOnChain) => (releaseOnChain ? "Yes" : "No"),
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Row justify={"start"} gutter={[24, 24]}>
-          <Tooltip title="Approve">
-            <Col>
-              <LikeFilled
-                onClick={() => {
-                  projectAPI
-                    .accept(record.id)
-                    .then(() => {
-                      notification.success({ message: "Accept successful" });
-                    })
-                    .catch((err) => {
-                      notification.error({
-                        message: "Accept failed",
-                        description: err.message,
-                      });
-                    });
-                }}
-              />{" "}
-            </Col>
-          </Tooltip>
-          <Tooltip title="Reject">
-            {" "}
-            <Col>
-              <DislikeFilled
-                onClick={() => {
-                  projectAPI
-                    .reject(record.id)
-                    .then(() => {
-                      notification.success({ message: "Reject successful" });
-                      dispatch(search());
-                    })
-                    .catch((err) => {
-                      notification.error({
-                        message: "Reject failed",
-                        description: err.message,
-                      });
-                    });
-                }}
-              />{" "}
-            </Col>
-          </Tooltip>
-          <Tooltip title="View Detail">
-            <Col>
-              <EyeFilled
-                onClick={() => {
-                  history.push(`/project/${record.id}`);
-                }}
-              />
-            </Col>
-          </Tooltip>
-        </Row>
-      ),
-    },
+    // {
+    //   title: "Accept Off Chain",
+    //   dataIndex: "acceptOffChain",
+    //   key: "acceptOffChain",
+    //   render: (acceptOffChain) => (acceptOffChain ? "Yes" : "No"),
+    // },
+    // {
+    //   title: "Reject Off Chain",
+    //   dataIndex: "rejectOffChain",
+    //   key: "rejectOffChain",
+    //   render: (rejectOffChain) => (rejectOffChain ? "Yes" : "No"),
+    // },
+    // {
+    //   title: "Accept On Chain",
+    //   dataIndex: "acceptOnChain",
+    //   key: "acceptOnChain",
+    //   render: (acceptOnChain) => (acceptOnChain ? "Yes" : "No"),
+    // },
+    // {
+    //   title: "Reject On Chain",
+    //   dataIndex: "rejectOnChain",
+    //   key: "rejectOnChain",
+    //   render: (rejectOnChain) => (rejectOnChain ? "Yes" : "No"),
+    // },
+    // {
+    //   title: "Release Off Chain",
+    //   dataIndex: "releaseOffChain",
+    //   key: "releaseOffChain",
+    //   render: (releaseOffChain) => (releaseOffChain ? "Yes" : "No"),
+    // },
+    // {
+    //   title: "Release On Chain",
+    //   dataIndex: "releaseOnChain",
+    //   key: "releaseOnChain",
+    //   render: (releaseOnChain) => (releaseOnChain ? "Yes" : "No"),
+    // },
   ];
 
   useEffect(() => {

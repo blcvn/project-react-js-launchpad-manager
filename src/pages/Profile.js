@@ -146,7 +146,6 @@ function Profile() {
         "Different people have different taste, and various types of music, Zimbali Resort",
     },
   ];
-
   return (
     <>
       <div

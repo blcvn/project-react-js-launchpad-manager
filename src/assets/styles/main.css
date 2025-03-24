@@ -3047,3 +3047,7 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 .w-10 {
   width: 10rem;
 }
+
+.gap-2 {
+  gap: 2rem;
+}

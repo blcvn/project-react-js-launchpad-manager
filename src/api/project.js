@@ -16,9 +16,20 @@ const reject = (id) => {
   return request.put(`${PREFIX}/reject/${id}`);
 };
 
+const release = (id) => {
+  return request.put(`${PREFIX}/release/${id}`);
+};
+
 const getProjectDetail = (id) => {
   return request.get(`${PREFIX}/${id}`);
 };
-const projectAPI = { create, search, accept, reject, getProjectDetail };
+const projectAPI = {
+  create,
+  search,
+  accept,
+  reject,
+  getProjectDetail,
+  release,
+};
 
 export default projectAPI;
