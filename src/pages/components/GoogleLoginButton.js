@@ -17,7 +17,7 @@ const GoogleLoginButton = () => {
         if (res.meta.requestStatus === "fulfilled") {
           setTimeout(() => {
             history.push("/profile");
-          }, 100);
+          }, 500);
         }
       });
     },
