@@ -19,7 +19,6 @@ const ProjectDetail = () => {
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [contributors, setContributors] = useState([]);
   const [cidData, setCidData] = useState(null);
   const [logoUrl, setLogoUrl] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
@@ -30,7 +29,6 @@ const ProjectDetail = () => {
       .getProjectDetail(projectId)
       .then((res) => {
         setProject(res);
-        setContributors(res.contributors || []);
       })
       .catch((err) => console.error("Error fetching project:", err))
       .finally(() => setLoading(false));
