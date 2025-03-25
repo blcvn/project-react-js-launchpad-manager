@@ -35,11 +35,11 @@ function Main({ children }) {
     }
   }, [pathname]);
 
-  useEffect(() => {
-    if (!currentUser) {
-      history.push("/sign-in");
-    }
-  }, [currentUser, history]);
+  // useEffect(() => {
+  //   if (!currentUser) {
+  //     history.push("/sign-in");
+  //   }
+  // }, [currentUser, history]);
 
   return (
     <Layout
