@@ -7,7 +7,6 @@ import { useHistory, useParams } from "react-router-dom";
 import projectAPI from "../api/project";
 import { PROJECT_STATUS_MAPPING } from "../utils/mapping";
 
-console.log(process.env)
 const ipfs = create({
   url: process.env.REACT_APP_IPFS_URL,
   protocol: process.env.REACT_APP_IPFS_URL.startsWith("https")
