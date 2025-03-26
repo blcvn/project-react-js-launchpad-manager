@@ -48,7 +48,7 @@ const ProjectDetail = () => {
   };
 
   const loadImgURL = async (cid, mime, limit) => {
-    if (cid == "" || cid == null || cid == undefined) {
+    if (cid === "" || cid == null || cid === undefined) {
       return;
     }
     const content = [];
