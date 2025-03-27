@@ -2,10 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import projectAPI from "../../../api/project";
 import { createCommonSlice } from "../../common";
 export const approveProjectForReview = createAsyncThunk(
-  `project/edit`,
-  async ({ id, body }, { rejectWithValue }) => {
+  `project/toReview`,
+  async (id, { rejectWithValue }) => {
     try {
-      await projectAPI.approveProjectForReview(id, body);
+      await projectAPI.approveProjectForReview(id);
       return id;
     } catch (err) {
       return rejectWithValue(err);
@@ -28,6 +28,17 @@ export const rejectProject = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await projectAPI.rejectProject(id);
+      return id;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+export const doneProject = createAsyncThunk(
+  `project/complete`,
+  async (id, { rejectWithValue }) => {
+    try {
+      await projectAPI.doneProject(id);
       return id;
     } catch (err) {
       return rejectWithValue(err);
