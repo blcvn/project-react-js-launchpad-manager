@@ -1,9 +1,11 @@
 import axios from "axios";
+import ENV from "../config/env";
 
 const axiosClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  baseURL: ENV.BASE_URL,
 });
 
 const request = {
@@ -15,7 +17,7 @@ const request = {
   },
 
   removeToken() {
-    localStorage.clear()
+    localStorage.clear();
     this.token = null;
   },
 

@@ -12,17 +12,15 @@ import {
   Row,
   Table,
   Tag,
-  Tooltip,
-  notification,
+  Tooltip
 } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import projectAPI from "../api/project";
-import { search, setParams } from "../stores/features/project/slice";
-import CreateProjectModal from "./components/CreateProjectModal";
-import AddContributorModal from "./components/AddContributorModal";
 import { useHistory } from "react-router-dom";
+import { fetchAll, setParams } from "../stores/features/project/slice";
 import { PROJECT_STATUS_MAPPING } from "../utils/mapping";
+import AddContributorModal from "./components/AddContributorModal";
+import CreateProjectModal from "./components/CreateProjectModal";
 
 function Project() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,7 +31,7 @@ function Project() {
   const { data, params, status, totalElements } = useSelector(
     (state) => state.project
   );
-
+  console.log(data, params, status, totalElements)
   const handleChangePagination = (page, pageSize) => {
     dispatch(setParams({ page: page - 1, size: pageSize }));
   };
@@ -46,45 +44,13 @@ function Project() {
     setIsModalOpen(true);
   };
   const handleAccept = (id) => () => {
-    projectAPI
-      .accept(id)
-      .then(() => {
-        notification.success({ message: "Accept successful" });
-      })
-      .catch((err) => {
-        notification.error({
-          message: "Accept failed",
-          description: err.message,
-        });
-      });
+   
   };
   const handleReject = (id) => () => {
-    projectAPI
-      .reject(id)
-      .then(() => {
-        notification.success({ message: "Reject successful" });
-        dispatch(search());
-      })
-      .catch((err) => {
-        notification.error({
-          message: "Reject failed",
-          description: err.message,
-        });
-      });
+    
   };
   const handleRelease = (id) => () => {
-    projectAPI
-      .release(id)
-      .then(() => {
-        notification.success({ message: "Release successful" });
-        dispatch(search());
-      })
-      .catch((err) => {
-        notification.error({
-          message: "Release failed",
-          description: err.message,
-        });
-      });
+   
   };
 
   const columns = [
@@ -216,7 +182,7 @@ function Project() {
   ];
 
   useEffect(() => {
-    dispatch(search());
+    dispatch(fetchAll());
     // const intervalRef = setInterval(() => {
     //   dispatch(search());
     // }, 1000);

@@ -1,35 +1,22 @@
-import ENV from "../config/env";
 import request from "../utils/request";
+import { makeCommonAPI } from "./common";
 
-const PREFIX = ENV.BASE_URL + "/project";
+const PREFIX =  "/project";
 
-const search = ({ page, size }) => {
-  return request.get(`${PREFIX}`, { page, size });
+const approveProjectForReview = async (projectId) => {
+  return request.put(`${PREFIX}/approve-review/${projectId}`);
 };
-const create = (body) => {
-  return request.post(`${PREFIX}`, body);
+const approveProjectForOnboarding = async (projectId) => {
+  return request.put(`${PREFIX}/approve-onboard/${projectId}`);
 };
-const accept = (id) => {
-  return request.put(`${PREFIX}/accept/${id}`);
-};
-const reject = (id) => {
+const rejectProject = (id) => {
   return request.put(`${PREFIX}/reject/${id}`);
 };
 
-const release = (id) => {
-  return request.put(`${PREFIX}/release/${id}`);
-};
-
-const getProjectDetail = (id) => {
-  return request.get(`${PREFIX}/${id}`);
-};
-const projectAPI = {
-  create,
-  search,
-  accept,
-  reject,
-  getProjectDetail,
-  release,
-};
+const projectAPI = makeCommonAPI(PREFIX, {
+  approveProjectForReview,
+  approveProjectForOnboarding,
+  rejectProject,
+});
 
 export default projectAPI;

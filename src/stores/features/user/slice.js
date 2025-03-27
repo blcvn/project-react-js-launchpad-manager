@@ -14,7 +14,7 @@ export const search = createAsyncThunk(
         message: "Search failed",
         description: err.message,
       });
-      return rejectWithValue(err.message);
+      return rejectWithValue(err);
     }
   }
 );
@@ -34,7 +34,7 @@ export const createReviewer = createAsyncThunk(
         message: "Create failed",
         description: err.message,
       });
-      return rejectWithValue(err.message);
+      return rejectWithValue(err);
     }
   }
 );
