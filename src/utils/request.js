@@ -1,11 +1,12 @@
 import axios from "axios";
 import ENV from "../config/env";
 
+console.log(ENV)
 const axiosClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  baseURL: ENV.BASE_URL,
+  baseURL: ENV.API_BASE_URL,
 });
 
 const request = {
@@ -29,6 +30,8 @@ const request = {
   },
 
   post(url, data = {}) {
+      debugger
+    
     return axiosClient.post(url, data, {
       headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
     });

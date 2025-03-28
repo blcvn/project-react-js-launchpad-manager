@@ -1,6 +1,5 @@
-import ENV from "../config/env";
 import request from "../utils/request";
-const PREFIX = ENV.BASE_URL + "/user";
+const PREFIX =  "/user";
 
 const register = ({ email, password, name }) => {
   return request.post(`${PREFIX}/register`, {

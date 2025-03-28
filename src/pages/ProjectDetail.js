@@ -5,13 +5,12 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import projectAPI from "../api/project";
+import ENV from "../config/env";
 import { PROJECT_STATUS_MAPPING } from "../utils/mapping";
 
 const ipfs = create({
-  url: process.env.REACT_APP_IPFS_URL,
-  protocol: process.env.REACT_APP_IPFS_URL.startsWith("https")
-    ? "https"
-    : "http",
+  url: ENV.IPFS_URL,
+  protocol: ENV.IPFS_URL.startsWith("https") ? "https" : "http",
 });
 const ProjectDetail = () => {
   const { projectId } = useParams(); // Lấy projectId từ URL
