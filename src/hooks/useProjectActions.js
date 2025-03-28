@@ -9,7 +9,7 @@ import { Tooltip } from "antd";
 import React from "react";
 
 const useProjectActions = (actionHandler) => {
-  debugger
+  debugger;
   const {
     handleApproveToReview,
     handleApproveToOnboard,

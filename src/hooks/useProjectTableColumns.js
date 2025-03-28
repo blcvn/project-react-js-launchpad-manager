@@ -1,8 +1,11 @@
 // src/components/ProjectTableColumns.jsx
-import { Tag } from "antd";
+import { Tag, Tooltip } from "antd";
+import { EyeFilled } from "@ant-design/icons";
 import React from "react";
 import { PROJECT_STATUS_COLOR_MAP } from "../constant/status";
 import useProjectActions from "../hooks/useProjectActions";
+import dayjs from "dayjs";
+import { Flex } from "../components/button/styled";
 
 export const useProjectTableColumns = (onAction) => {
   const { getActionByStatus } = useProjectActions(onAction);
@@ -21,23 +24,34 @@ export const useProjectTableColumns = (onAction) => {
       fixed: true,
 
       render: (id = 1, record) => (
-        <div className="flex gap-2">{getActionByStatus(record.status, id)}</div>
+        <Flex>
+          <Tooltip title="View">
+            <EyeFilled
+              className="cursor-pointer !text-blue-500"
+              onClick={() => onAction.handleViewDetail(id)}
+            />
+          </Tooltip>
+          {getActionByStatus(record.status, id)}
+        </Flex>
       ),
     },
     {
       title: "Project Name",
       dataIndex: "projectName",
       key: "projectName",
+      fixed: true,
     },
     {
       title: "Start Time",
       dataIndex: "startTime",
       key: "startTime",
+      render: (time) => dayjs(time).format("DD/MM/YYYY HH:mm:ss"),
     },
     {
       title: "End Time",
       dataIndex: "endTime",
       key: "endTime",
+      render: (time) => dayjs(time).format("DD/MM/YYYY HH:mm:ss"),
     },
     {
       title: "Status",
