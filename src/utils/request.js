@@ -66,7 +66,7 @@ axiosClient.interceptors.response.use(
     console.error("API Error:", error);
     if (error.response.status === 401 || error.response.status === 403) {
       request.removeToken();
-      window.location.href = "/sign-in";
+      // window.location.href = "/sign-in";
     }
     return Promise.reject(error.response?.data || error.message);
   }
