@@ -13,7 +13,7 @@ const getENVConfigFromOrigin = () => {
     return env;
   }
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 1; i < 10; i++) {
     const originKey = `REACT_APP_ORIGINAL_URL_${i}`;
     if (!process.env[originKey]) {
       throw Error(`REACT_APP_ORIGINAL_URL_${i} not found`);
