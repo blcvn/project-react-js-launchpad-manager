@@ -1,189 +1,130 @@
-import { BackwardOutlined } from "@ant-design/icons";
-import { Button, Card, Descriptions, Spin, Table, Tag } from "antd";
-import { create } from "ipfs-http-client";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import projectAPI from "../api/project";
-import { PROJECT_STATUS_MAPPING } from "../utils/mapping";
+import { faker } from "@faker-js/faker";
+import { Affix, Button, notification } from "antd";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { ProjectStatus } from "../constant/status.js";
+import {
+  approveProjectForOnboarding,
+  completeProject,
+  rejectProject,
+} from "../stores/features/project/slice.js";
+import ModalSubmitDocument from "./components/ProjectDetail/ModelSubmitDocument.js";
+import { getActionByStatus } from "./components/ProjectDetail/ProjectAction.js";
+import ProjectInfo from "./components/ProjectDetail/ProjectInfo.js";
 
-const ipfs = create({
-  url: process.env.REACT_APP_IPFS_URL,
-  protocol: process.env.REACT_APP_IPFS_URL.startsWith("https")
-    ? "https"
-    : "http",
+const generateMockProject = () => ({
+  name: faker.company.name(),
+  description: faker.lorem.sentence(),
+  icon: { filename: "icon.png", content: faker.image.avatar() },
+  owner: faker.internet.email(),
+  token_address: faker.finance.ethereumAddress(),
+  address: faker.finance.ethereumAddress(),
+  contributors: Array.from({ length: 3 }, () => ({
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+  })),
+  donators: Array.from({ length: 2 }, () => ({
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+  })),
+  infos: [{ filename: "info1.pdf", content: "PDF Content" }],
+  completed_infos: [
+    { filename: "completed_info1.pdf", content: "PDF Content" },
+  ],
+  reject_review_reason: faker.lorem.sentence(),
+  reject_done_reason: faker.lorem.sentence(),
+  status: faker.helpers.arrayElement(Object.values(ProjectStatus)),
 });
+
 const ProjectDetail = () => {
-  const { projectId } = useParams(); // Lấy projectId từ URL
+  const { idoAddress } = useParams();
+  const [project, setProject] = useState(generateMockProject());
+  const submitDocRef = useRef(null);
 
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const [cidData, setCidData] = useState(null);
-  const [logoUrl, setLogoUrl] = useState("");
-  const [pdfUrl, setPdfUrl] = useState("");
-  const history = useHistory();
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    projectAPI
-      .getProjectDetail(projectId)
-      .then((res) => {
-        setProject(res);
-      })
-      .catch((err) => console.error("Error fetching project:", err))
-      .finally(() => setLoading(false));
-  }, [projectId]);
+    setProject(generateMockProject());
+  }, [idoAddress]);
 
-  const fetchJsonByHash = async (hash) => {
-    try {
-      let content = "";
-      for await (const chunk of ipfs.cat(hash)) {
-        content += new TextDecoder().decode(chunk);
+  const actionHandlers = {
+    handleAcceptOnboard: async (id) => {
+      try {
+        const response = await dispatch(
+          approveProjectForOnboarding(id)
+        ).unwrap();
+        notification.success({
+          message: "Success",
+          description: `Project ${response} approved for onboarding`,
+        });
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: err.message,
+        });
       }
-      return JSON.parse(content);
-    } catch (error) {
-      console.error("Error fetching JSON by hash:", error);
-      return null;
-    }
-  };
-
-  const loadImgURL = async (cid, mime, limit) => {
-    if (cid === "" || cid == null || cid === undefined) {
-      return;
-    }
-    const content = [];
-    for await (const chunk of ipfs.cat(cid, { length: limit })) {
-      content.push(chunk);
-    }
-    return URL.createObjectURL(new Blob(content, { type: mime }));
-  };
-
-  const downloadFile = async (cid) => {
-    try {
-      const chunks = [];
-      for await (const chunk of ipfs.cat(cid)) {
-        chunks.push(chunk);
-      }
-      const blob = new Blob(chunks, { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-      setPdfUrl(url);
-    } catch (error) {
-      console.error("Error downloading file:", error);
-    }
-  };
-  useEffect(() => {
-    const getFile = async () => {
-      if (project && project.cid) {
-        const jsonData = await fetchJsonByHash(project.cid);
-        setCidData(jsonData);
-
-        if (jsonData.logoCid) {
-          const logoContent = await loadImgURL(
-            jsonData.logoCid,
-            "image/png",
-            524288
-          );
-          setLogoUrl(logoContent);
-        }
-        if (jsonData.pdfCid) {
-          downloadFile(jsonData.pdfCid);
-        }
-      }
-    };
-    getFile();
-  }, [project]);
-
-  if (loading) return <Spin size="large" />;
-  if (!project) return <p>Project not found</p>;
-
-  const columns = [
-    { title: "ID", dataIndex: "id", key: "id" },
-    { title: "Name", dataIndex: "name", key: "name" },
-    { title: "Address", dataIndex: "address", key: "address" },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
     },
-  ];
-  const handleBack = () => {
-    history.push("/project");
-  };
-
-  const statusMapping = PROJECT_STATUS_MAPPING[project.status] || {};
-  return (
-    <Card
-      title={
-        <Button onClick={handleBack}>
-          <BackwardOutlined />
-          Back
-        </Button>
+    handleRejectOnboard: async (id) => {
+      try {
+        const response = await dispatch(rejectProject(id)).unwrap();
+        notification.success({
+          message: "Success",
+          description: `Project ${response} rejected for onboarding`,
+        });
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: err.message,
+        });
       }
-      bordered={false}
-    >
-      <Descriptions bordered column={1} title="Project Metadata">
-        <Descriptions.Item label="ID">{project.id}</Descriptions.Item>
-        <Descriptions.Item label="BlockchainID">
-          {project.blockchainId}
-        </Descriptions.Item>
-        <Descriptions.Item label="CID">{project.cid}</Descriptions.Item>
-        <Descriptions.Item label="Status">
-          <Tag color={statusMapping.color}>{statusMapping.text}</Tag>
-        </Descriptions.Item>
-        <Descriptions.Item label="Start Time">
-          {moment(project.startTime).format("YYYY-MM-DD HH:mm:ss")}
-        </Descriptions.Item>
-        <Descriptions.Item label="End Time">
-          {moment(project.endTime).format("YYYY-MM-DD HH:mm:ss")}
-        </Descriptions.Item>
-        <Descriptions.Item label="Token Address">
-          {project.tokenAddress}
-        </Descriptions.Item>
-        <Descriptions.Item label="Total Amount">
-          {project.totalAmount ? project.totalAmount / 1e18 : ""}
-        </Descriptions.Item>
-        <Descriptions.Item label="Pool Address">
-          {project.poolAddress}
-        </Descriptions.Item>
-        <Descriptions.Item label="Owner">{project.owner}</Descriptions.Item>
-        <Descriptions.Item label="Accept Off-Chain">
-          {project.acceptOffChain ? "Yes" : "No"}
-        </Descriptions.Item>
-        <Descriptions.Item label="Reject Off-Chain">
-          {project.rejectOffChain ? "Yes" : "No"}
-        </Descriptions.Item>
-        <Descriptions.Item label="Accept On-Chain">
-          {project.acceptOnChain ? "Yes" : "No"}
-        </Descriptions.Item>
-        <Descriptions.Item label="Reject On-Chain">
-          {project.rejectOnChain ? "Yes" : "No"}
-        </Descriptions.Item>
-        <Descriptions.Item label="Release Off-Chain">
-          {project.releaseOffChain ? "Yes" : "No"}
-        </Descriptions.Item>
-        <Descriptions.Item label="Release On-Chain">
-          {project.releaseOnChain ? "Yes" : "No"}
-        </Descriptions.Item>
-        {logoUrl && (
-          <Descriptions.Item label="Logo">
-            <img
-              src={logoUrl}
-              alt="Project Logo"
-              style={{ maxWidth: "100px" }}
-            />
-          </Descriptions.Item>
-        )}
-        <Descriptions.Item label="PDF">
-          <a href={pdfUrl}> View pdf</a>
-          {/* <div>
-            <PdfViewer pdfFile={"https://ipfs.io/ipfs/" + pdfUrl} />
-          </div> */}
-        </Descriptions.Item>
-      </Descriptions>
-      <h2 style={{ marginTop: 20 }}>Contributors</h2>
-
-      <Table dataSource={project.contributors} columns={columns} rowKey="id" />
-    </Card>
+    },
+    handleAcceptDone: async (id) => {
+      try {
+        const response = await dispatch(completeProject(id)).unwrap();
+        notification.success({
+          message: "Success",
+          description: `Project ${response} completed`,
+        });
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: err.message,
+        });
+      }
+    },
+    handleRejectDone: async (id) => {
+      try {
+        const response = await dispatch(rejectProject(id)).unwrap();
+        notification.success({
+          message: "Success",
+          description: `Project ${response} rejected`,
+        });
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: err.message,
+        });
+      }
+    },
+  };
+  return (
+    <div>
+      <div className="flex justify-content-end mr-4">
+        <Affix offsetTop={50}>
+          <Button className="mr-4">
+            {getActionByStatus(project.status, idoAddress, actionHandlers)}
+          </Button>
+        </Affix>
+      </div>
+      <div className="mx-auto p-6 bg-gray-50 min-h-screen">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-6">
+          <div className="lg:col-span-3 bg-white shadow-md rounded-lg p-6">
+            <ProjectInfo project={project} />
+          </div>
+        </div>
+      </div>
+      <ModalSubmitDocument ref={submitDocRef} />
+    </div>
   );
 };
 

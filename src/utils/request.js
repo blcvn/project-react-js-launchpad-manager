@@ -1,9 +1,11 @@
 import axios from "axios";
+import ENV from "../config/env";
 
 const axiosClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  baseURL: ENV.API_BASE_URL,
 });
 
 const request = {
@@ -15,7 +17,7 @@ const request = {
   },
 
   removeToken() {
-    localStorage.clear()
+    localStorage.clear();
     this.token = null;
   },
 
@@ -27,6 +29,8 @@ const request = {
   },
 
   post(url, data = {}) {
+    debugger;
+
     return axiosClient.post(url, data, {
       headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
     });
@@ -61,7 +65,9 @@ axiosClient.interceptors.response.use(
     console.error("API Error:", error);
     if (error.response.status === 401 || error.response.status === 403) {
       request.removeToken();
-      window.location.href = "/sign-in";
+      if (window.location.pathname !== "/sign-in") {
+        window.location.href = "/sign-in";
+      }
     }
     return Promise.reject(error.response?.data || error.message);
   }

@@ -1,76 +1,48 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { notification } from "antd";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import projectAPI from "../../../api/project";
+import { createCommonSlice } from "../../common";
 
-export const search = createAsyncThunk(
-  "project/search",
-  async (_, { getState, rejectWithValue }) => {
+
+
+export const approveProjectForOnboarding = createAsyncThunk(
+  `project/submit`,
+  async (id, { rejectWithValue }) => {
     try {
-      const { params } = getState().project;
-      const res = await projectAPI.search(params);
-      return res;
+      return id;
     } catch (err) {
-      notification.error({
-        message: "Search failed",
-        description: err.message,
-      });
-      return rejectWithValue(err.message);
+      return rejectWithValue(err);
+    }
+  }
+)
+export const rejectProject = createAsyncThunk(
+  `project/reject`,
+  async (id, { rejectWithValue }) => {
+    try {
+      return id;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  })
+
+
+export const completeProject = createAsyncThunk(
+  `project/complete`,
+  async (id, { rejectWithValue }) => {
+    try {
+      return id;
+    } catch (err) {
+      return rejectWithValue(err);
     }
   }
 );
 
-export const create = createAsyncThunk(
-  "project/create",
-  async (values, { dispatch, rejectWithValue }) => {
-    try {
-      const res = await projectAPI.create(values);
-      notification.success({
-        message: "Project created successfully",
-      });
-      dispatch(search());
-      return res;
-    } catch (err) {
-      notification.error({
-        message: "Create failed",
-        description: err.message,
-      });
-      return rejectWithValue(err.message);
-    }
-  }
-);
 
-const initialState = {
-  data: [],
-  totalElements: 0,
-  params: { page: 0, size: 10 },
-  status: "idle",
-  error: null,
-};
-
-export const authSlice = createSlice({
+export const projectSlice = createCommonSlice({
   name: "project",
-  initialState,
-  reducers: {
-    setParams: (state, action) => {
-      state.params = { ...state.params, ...action.payload };
-    },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(search.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(search.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.data = action.payload.data;
-        state.totalElements = action.payload.total;
-      })
-      .addCase(search.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      });
-  },
+  api: projectAPI,
 });
+export const { fetchAll, create, update, remove, fetchById } =
+  projectSlice.actions;
 
-export const { setParams } = authSlice.actions;
-export default authSlice.reducer;
+export const { setParams } = projectSlice.slice.actions;
+export default projectSlice.slice.reducer;

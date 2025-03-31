@@ -4,6 +4,7 @@ import logo3 from "../../assets/images/Google__G__Logo.svg.png";
 import { loginWithGoogle } from "../../stores/features/auth/slice";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { ROUTES_PATH } from "../../constant/path";
 const GoogleLoginButton = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -16,7 +17,7 @@ const GoogleLoginButton = () => {
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setTimeout(() => {
-            history.push("/profile");
+            history.push(`${ROUTES_PATH.PROFILE}`);
           }, 500);
         }
       });

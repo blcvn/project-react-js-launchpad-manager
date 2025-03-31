@@ -10,27 +10,32 @@ import ProjectDetail from "./pages/ProjectDetail";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import User from "./pages/User";
+import { ROUTES_PATH } from "./constant/path";
 
 function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/sign-up" exact component={SignUp} />
-        <Route path="/sign-in" exact component={SignIn} />
+        <Route path={ROUTES_PATH.SIGN_UP} exact component={SignUp} />
+        <Route path={ROUTES_PATH.SIGN_IN} exact component={SignIn} />
         <Main>
           <Switch>
-            <Route exact path="/dashboard" component={Home} />
-            <Route exact path="/user" component={User} />
-            <Route exact path="/project" component={Project} />
-            <Route exact path="/project/:projectId" component={ProjectDetail} />
-            <Route exact path="/profile" component={Profile} />
+            <Route exact path={ROUTES_PATH.HOME} component={Home} />
+            <Route exact path={ROUTES_PATH.USER} component={User} />
+            <Route exact path={ROUTES_PATH.PROJECT} component={Project} />
+            <Route
+              exact
+              path={ROUTES_PATH.PROJECT_DETAIL}
+              component={ProjectDetail}
+            />
+            <Route exact path={ROUTES_PATH.PROFILE} component={Profile} />
             <Route path="*">
-              <Redirect to="/sign-in" />
+              <Redirect to={ROUTES_PATH.SIGN_IN} />
             </Route>{" "}
           </Switch>
         </Main>
         <Route path="*">
-          <Redirect to="/sign-in" />
+          <Redirect to={ROUTES_PATH.SIGN_IN} />
         </Route>{" "}
       </Switch>
     </div>

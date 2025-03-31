@@ -1,7 +1,7 @@
 import { Affix, Drawer, Layout } from "antd";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Footer from "./Footer";
+
 import Header from "./Header";
 import Sidenav from "./Sidenav";
 
@@ -108,8 +108,9 @@ function Main({ children }) {
             />
           </AntHeader>
         )}
-        <Content className="content-ant">{children}</Content>
-        <Footer />
+        <Content className="content-ant" style={{ backgroundColor: "white" }}>
+          {children}
+        </Content>
       </Layout>
     </Layout>
   );

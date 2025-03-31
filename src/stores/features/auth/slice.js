@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authAPI from "../../../api/auth";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { notification } from "antd";
+import authAPI from "../../../api/auth";
 import { LOCAL_STORAGE_KEY } from "../../../constant/key";
 import request from "../../../utils/request";
 
@@ -27,7 +27,7 @@ export const login = createAsyncThunk(
       return res;
     } catch (err) {
       notification.error({ message: "Login failed", description: err.message });
-      return rejectWithValue(err.message);
+      return rejectWithValue(err);
     }
   }
 );
@@ -44,7 +44,7 @@ export const loginWithGoogle = createAsyncThunk(
       return res;
     } catch (err) {
       notification.error({ message: "Login failed", description: err.message });
-      return rejectWithValue(err.message);
+      return rejectWithValue(err);
     }
   }
 );

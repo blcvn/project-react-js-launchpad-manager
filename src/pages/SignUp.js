@@ -19,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import authAPI from "../api/auth";
+import { ROUTES_PATH } from "../constant/path";
 
 const { Title } = Typography;
 const { Header, Footer, Content } = Layout;
@@ -33,7 +34,7 @@ class SignUp extends Component {
             message: "Register successful",
             description: "You can now login with your new account.",
           });
-          this.props.history.push("/sign-in");
+          this.props.history.push(ROUTES_PATH.SIGN_IN);
         })
         .catch((err) => {
           notification.error({
@@ -143,7 +144,7 @@ class SignUp extends Component {
               </Form>
               <p className="font-semibold text-muted text-center">
                 Already have an account?{" "}
-                <Link to="/sign-in" className="font-bold text-dark">
+                <Link to={ROUTES_PATH.SIGN_IN} className="font-bold text-dark">
                   Sign In
                 </Link>
               </p>
@@ -185,10 +186,6 @@ class SignUp extends Component {
                 <Link to="#">{<GithubOutlined />}</Link>
               </Menu.Item>
             </Menu>
-            <p className="copyright">
-              {" "}
-              Copyright © 2021 Muse by <a href="#pablo">Creative Tim</a>.{" "}
-            </p>
           </Footer>
         </div>
       </>
