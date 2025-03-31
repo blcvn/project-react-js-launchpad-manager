@@ -108,9 +108,7 @@ function Main({ children }) {
             />
           </AntHeader>
         )}
-        <Content className="content-ant" style={{ backgroundColor: "white" }}>
-          {children}
-        </Content>
+        <Content className="content-ant">{children}</Content>
       </Layout>
     </Layout>
   );

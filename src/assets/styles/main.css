@@ -372,7 +372,9 @@ body {
   width: 100%;
   flex-shrink: 0;
 }
-
+.content-ant {
+  background-color: white;
+}
 .layout-dashboard .ant-layout-header {
   background: transparent;
   height: auto;
