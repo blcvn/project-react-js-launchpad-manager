@@ -1,5 +1,5 @@
 import request from "../utils/request";
-const PREFIX =  "/user";
+const PREFIX =  "/launchpad/api/v1/user";
 
 const register = ({ email, password, name }) => {
   return request.post(`${PREFIX}/register`, {

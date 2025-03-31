@@ -1,7 +1,7 @@
 import request from "../utils/request";
 import { makeCommonAPI } from "./common";
 
-const PREFIX = "/project";
+const PREFIX = "/launchpad/api/v1/project";
 
 const approveProjectForReview = async (projectId) => {
   return request.put(`${PREFIX}/approve-review/${projectId}`);

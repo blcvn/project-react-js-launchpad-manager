@@ -91,7 +91,7 @@ const Project = () => {
 
   return (
     <>
-      <div>
+      <div className="tabled ">
         <TablePagination
           columns={columns}
           data={fakeData}
