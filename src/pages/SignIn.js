@@ -31,7 +31,6 @@ class SignIn extends Component {
     return (
       <>
         <Layout className="layout-default layout-signin">
-
           <Content className="signin">
             <Row gutter={[24, 0]} justify="space-around">
               <Col
@@ -75,7 +74,16 @@ class SignIn extends Component {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your password!",
+                        message: "Password is required!",
+                      },
+                      {
+                        pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).+$/,
+                        message:
+                          "Must include an uppercase, a lowercase & a special character!",
+                      },
+                      {
+                        min: 10,
+                        message: "Password must be at least 10 characters!",
                       },
                     ]}
                   >

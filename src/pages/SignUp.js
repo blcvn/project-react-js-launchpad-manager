@@ -110,12 +110,13 @@ class SignUp extends Component {
                   rules={[
                     { required: true, message: "Please input your password!" },
                     {
-                      min: 6,
-                      message: "Password must be at least 6 characters!",
+                      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).+$/,
+                      message:
+                        "Must include an uppercase, a lowercase & a special character!",
                     },
                     {
-                      max: 50,
-                      message: "Password cannot exceed 50 characters!",
+                      min: 10,
+                      message: "Password must be at least 10 characters!",
                     },
                   ]}
                 >
