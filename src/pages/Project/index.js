@@ -31,8 +31,9 @@ const Project = () => {
         const response = await dispatch(approveProjectForReview(id)).unwrap();
         notification.success({
           message: "Success",
-          description: `Project ${response} approved for review`,
+          description: `Project ${id} approved for review`,
         });
+        fetchData();
       } catch (err) {
         notification.error({
           message: "Error",
@@ -45,8 +46,9 @@ const Project = () => {
         const response = await dispatch(approveOnboarding(id)).unwrap();
         notification.success({
           message: "Success",
-          description: `Project ${response} approved for onboarding`,
+          description: `Project ${id} approved for onboarding`,
         });
+        fetchData();
       } catch (err) {
         notification.error({
           message: "Error",
@@ -63,8 +65,9 @@ const Project = () => {
             ).unwrap();
             notification.success({
               message: "Success",
-              description: `Project ${response} rejected for onboarding`,
+              description: `Project ${id} rejected for onboarding`,
             });
+            fetchData();
           } catch (err) {
             notification.error({
               message: "Error",
@@ -79,8 +82,9 @@ const Project = () => {
         const response = await dispatch(approveDone(id)).unwrap();
         notification.success({
           message: "Success",
-          description: `Project ${response} completed`,
+          description: `Project ${id} completed`,
         });
+        fetchData();
       } catch (err) {
         notification.error({
           message: "Error",
@@ -95,8 +99,9 @@ const Project = () => {
             const response = await dispatch(rejectDone({ id, text })).unwrap();
             notification.success({
               message: "Success",
-              description: `Project ${response} rejected`,
+              description: `Project ${id} rejected`,
             });
+            fetchData();
           } catch (err) {
             notification.error({
               message: "Error",

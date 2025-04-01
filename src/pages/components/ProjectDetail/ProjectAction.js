@@ -12,7 +12,6 @@ export const getActionByStatus = (status, id, handlers) => {
     handleRejectDone,
     handleAcceptReview,
   } = handlers;
-  status = ProjectStatus.SUBMITTED
   switch (status) {
     case ProjectStatus.REVIEWING:
       return (
