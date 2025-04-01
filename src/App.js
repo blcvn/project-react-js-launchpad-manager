@@ -3,14 +3,14 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
 import Main from "./components/layout/Main";
+import { ROUTES_PATH } from "./constant/path";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import Project from "./pages/Project";
+import Project from "./pages/Project/index";
 import ProjectDetail from "./pages/ProjectDetail";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import User from "./pages/User";
-import { ROUTES_PATH } from "./constant/path";
 
 function App() {
   return (

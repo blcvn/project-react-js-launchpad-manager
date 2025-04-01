@@ -9,6 +9,7 @@ const TablePagination = ({
   params,
   loading = false,
   rowKey = "key",
+  clientSearch = false,
 }) => {
   return (
     <div>
@@ -17,20 +18,32 @@ const TablePagination = ({
         columns={columns}
         loading={loading}
         rowKey={rowKey}
-        pagination={false}
-        scroll={{ x: true }}
+        pagination={
+          clientSearch
+            ? {
+                showPrevNextJumpers: true,
+                showSizeChanger: true,
+                onChange: (page, pageSize) => {
+                  setParams(page, pageSize);
+                },
+              }
+            : false
+        }
       />
-      <Pagination
-        onChange={setParams}
-        showPrevNextJumpers
-        showTotal={totalElements}
-        showSizeChanger
-        defaultCurrent={params.page}
-        total={totalElements}
-        defaultPageSize={params.size}
-        pageSize={params.size}
-        current={params.page}
-      />
+      {!clientSearch && (
+        <div className="d-flex justify-content-end">
+          <Pagination
+            showPrevNextJumpers
+            showSizeChanger
+            onChange={setParams}
+            defaultCurrent={params.page}
+            total={totalElements}
+            defaultPageSize={params.size}
+            pageSize={params.size}
+            current={params.page}
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -45,6 +58,7 @@ TablePagination.propTypes = {
   }).isRequired,
   loading: PropTypes.bool,
   rowKey: PropTypes.string,
+  clientSearch: PropTypes.bool,
 };
 
 export default TablePagination;

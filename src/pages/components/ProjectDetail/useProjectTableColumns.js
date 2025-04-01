@@ -4,17 +4,21 @@ import { Tag, Tooltip } from "antd";
 import dayjs from "dayjs";
 import React from "react";
 import { Flex } from "../../../components/button/styled";
-import { PROJECT_STATUS_COLOR_MAP, PROJECT_STATUS_TEXT_MAP } from "../../../constant/status";
+import { EllipsisLongText } from "../../../components/styled/EllipsisLongText";
+import {
+  PROJECT_STATUS_COLOR_MAP,
+  PROJECT_STATUS_TEXT_MAP,
+} from "../../../constant/status";
 import { getActionByStatus } from "./ProjectAction";
 
-export const useProjectTableColumns = (handlers) => {
+export const useProjectTableColumns = (handlers, params) => {
   return [
     {
       title: "No.",
       dataIndex: "id",
       key: "id",
       fixed: true,
-      render: (text, record, index) => index + 1,
+      render: (text, record, index) => params.page * params.size + index + 1,
     },
     {
       title: "Action",
@@ -57,14 +61,22 @@ export const useProjectTableColumns = (handlers) => {
       dataIndex: "status",
       key: "status",
       render: (status) => (
-        <Tag color={PROJECT_STATUS_COLOR_MAP[status]}>{PROJECT_STATUS_TEXT_MAP[status]}</Tag>
+        <Tag color={PROJECT_STATUS_COLOR_MAP[status]}>
+          {PROJECT_STATUS_TEXT_MAP[status]}
+        </Tag>
       ),
     },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      render: (description) => (
+        <div style={{ maxWidth: "200px" }}>
+          <EllipsisLongText>{description}</EllipsisLongText>
+        </div>
+      ),
     },
+
     {
       title: "PDF",
       dataIndex: "pdf",
