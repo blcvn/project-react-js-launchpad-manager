@@ -19,7 +19,7 @@ const Project = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const handleSetParams = (page, size) => {
-    dispatch(setParams({ page, size }));
+    dispatch(setParams({ page: page - 1, size }));
   };
   const rejectRef = useRef(null);
 
