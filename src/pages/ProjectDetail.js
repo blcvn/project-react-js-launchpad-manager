@@ -2,16 +2,20 @@ import { faker } from "@faker-js/faker";
 import { Affix, Button, notification } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { ROUTES_PATH } from "../constant/path.js";
 import { ProjectStatus } from "../constant/status.js";
 import {
-  approveProjectForOnboarding,
-  completeProject,
-  rejectProject,
-} from "../stores/features/project/slice.js";
+  approveDone,
+  approveOnboarding,
+  approveProjectForReview,
+  rejectDone,
+  rejectOnboard,
+} from "../stores/features/project/slice";
 import ModalSubmitDocument from "./components/ProjectDetail/ModelSubmitDocument.js";
 import { getActionByStatus } from "./components/ProjectDetail/ProjectAction.js";
 import ProjectInfo from "./components/ProjectDetail/ProjectInfo.js";
+import ModalInputReason from "./Project/components/ModalInputReason.jsx";
 
 const generateMockProject = () => ({
   name: faker.company.name(),
@@ -41,18 +45,32 @@ const ProjectDetail = () => {
   const { idoAddress } = useParams();
   const [project, setProject] = useState(generateMockProject());
   const submitDocRef = useRef(null);
+  const history = useHistory();
 
   const dispatch = useDispatch();
   useEffect(() => {
     setProject(generateMockProject());
   }, [idoAddress]);
+  const rejectRef = useRef(null);
 
   const actionHandlers = {
+    handleAcceptReview: async (id) => {
+      try {
+        const response = await dispatch(approveProjectForReview(id)).unwrap();
+        notification.success({
+          message: "Success",
+          description: `Project ${response} approved for review`,
+        });
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: err.message,
+        });
+      }
+    },
     handleAcceptOnboard: async (id) => {
       try {
-        const response = await dispatch(
-          approveProjectForOnboarding(id)
-        ).unwrap();
+        const response = await dispatch(approveOnboarding(id)).unwrap();
         notification.success({
           message: "Success",
           description: `Project ${response} approved for onboarding`,
@@ -65,22 +83,26 @@ const ProjectDetail = () => {
       }
     },
     handleRejectOnboard: async (id) => {
-      try {
-        const response = await dispatch(rejectProject(id)).unwrap();
-        notification.success({
-          message: "Success",
-          description: `Project ${response} rejected for onboarding`,
-        });
-      } catch (err) {
-        notification.error({
-          message: "Error",
-          description: err.message,
-        });
-      }
+      rejectRef.current.show({
+        callback: async () => {
+          try {
+            const response = await dispatch(rejectOnboard(id)).unwrap();
+            notification.success({
+              message: "Success",
+              description: `Project ${response} rejected for onboarding`,
+            });
+          } catch (err) {
+            notification.error({
+              message: "Error",
+              description: err.message,
+            });
+          }
+        },
+      });
     },
     handleAcceptDone: async (id) => {
       try {
-        const response = await dispatch(completeProject(id)).unwrap();
+        const response = await dispatch(approveDone(id)).unwrap();
         notification.success({
           message: "Success",
           description: `Project ${response} completed`,
@@ -93,18 +115,25 @@ const ProjectDetail = () => {
       }
     },
     handleRejectDone: async (id) => {
-      try {
-        const response = await dispatch(rejectProject(id)).unwrap();
-        notification.success({
-          message: "Success",
-          description: `Project ${response} rejected`,
-        });
-      } catch (err) {
-        notification.error({
-          message: "Error",
-          description: err.message,
-        });
-      }
+      rejectRef.current.show({
+        callback: async () => {
+          try {
+            const response = await dispatch(rejectDone(id)).unwrap();
+            notification.success({
+              message: "Success",
+              description: `Project ${response} rejected`,
+            });
+          } catch (err) {
+            notification.error({
+              message: "Error",
+              description: err.message,
+            });
+          }
+        },
+      });
+    },
+    handleViewDetail: (id) => {
+      history.push(`${ROUTES_PATH.PROJECT}/${id}`);
     },
   };
   return (
@@ -124,6 +153,7 @@ const ProjectDetail = () => {
         </div>
       </div>
       <ModalSubmitDocument ref={submitDocRef} />
+      <ModalInputReason ref={rejectRef} />
     </div>
   );
 };

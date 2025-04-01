@@ -8,6 +8,6 @@ export const ButtonColorStyles = styled(Button)`
 export const Flex = styled.div`
   display: flex;
   gap: 10px;
-  justify-content: end;
+  justify-content: flex-start;
   align-items: center;
 `;

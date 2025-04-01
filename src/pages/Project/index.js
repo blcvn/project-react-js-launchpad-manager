@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { ROUTES_PATH } from "../../constant/path";
 import {
-  approveProjectForOnboarding,
-  completeProject,
+  approveDone,
+  approveOnboarding,
+  approveProjectForReview,
   queryProject,
-  rejectProject,
+  rejectDone,
+  rejectOnboard,
   setParams,
 } from "../../stores/features/project/slice";
 import { useProjectTableColumns } from "../components/ProjectDetail/useProjectTableColumns";
@@ -15,7 +17,7 @@ import TablePagination from "../components/Table/TablePagination";
 import ModalInputReason from "./components/ModalInputReason";
 
 const Project = () => {
-  const { data, loading, params } = useSelector((state) => state.project);
+  const { data, status, params } = useSelector((state) => state.project);
   const dispatch = useDispatch();
   const history = useHistory();
   const handleSetParams = (page, size) => {
@@ -24,11 +26,23 @@ const Project = () => {
   const rejectRef = useRef(null);
 
   const actionHandlers = {
+    handleAcceptReview: async (id) => {
+      try {
+        const response = await dispatch(approveProjectForReview(id)).unwrap();
+        notification.success({
+          message: "Success",
+          description: `Project ${response} approved for review`,
+        });
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: err.message,
+        });
+      }
+    },
     handleAcceptOnboard: async (id) => {
       try {
-        const response = await dispatch(
-          approveProjectForOnboarding(id)
-        ).unwrap();
+        const response = await dispatch(approveOnboarding(id)).unwrap();
         notification.success({
           message: "Success",
           description: `Project ${response} approved for onboarding`,
@@ -42,9 +56,11 @@ const Project = () => {
     },
     handleRejectOnboard: async (id) => {
       rejectRef.current.show({
-        callback: async () => {
+        callback: async (text) => {
           try {
-            const response = await dispatch(rejectProject(id)).unwrap();
+            const response = await dispatch(
+              rejectOnboard({ id: id, text })
+            ).unwrap();
             notification.success({
               message: "Success",
               description: `Project ${response} rejected for onboarding`,
@@ -60,7 +76,7 @@ const Project = () => {
     },
     handleAcceptDone: async (id) => {
       try {
-        const response = await dispatch(completeProject(id)).unwrap();
+        const response = await dispatch(approveDone(id)).unwrap();
         notification.success({
           message: "Success",
           description: `Project ${response} completed`,
@@ -74,9 +90,9 @@ const Project = () => {
     },
     handleRejectDone: async (id) => {
       rejectRef.current.show({
-        callback: async () => {
+        callback: async (text) => {
           try {
-            const response = await dispatch(rejectProject(id)).unwrap();
+            const response = await dispatch(rejectDone({ id, text })).unwrap();
             notification.success({
               message: "Success",
               description: `Project ${response} rejected`,
@@ -94,11 +110,11 @@ const Project = () => {
       history.push(`${ROUTES_PATH.PROJECT}/${id}`);
     },
   };
-  const columns = useProjectTableColumns(actionHandlers,params);
+  const columns = useProjectTableColumns(actionHandlers, params);
   const fetchData = useCallback(() => {
     dispatch(
       queryProject({
-        status: "DRAFT",
+        // status: "DRAFT",
       })
     );
   }, [dispatch]);
@@ -112,7 +128,7 @@ const Project = () => {
         columns={columns}
         data={data}
         params={params}
-        loading={loading}
+        loading={status === "loading"}
         setParams={handleSetParams}
         clientSearch={true}
       />

@@ -1,14 +1,18 @@
 import { CheckOutlined, StopOutlined } from "@ant-design/icons";
 import { Tag, Tooltip } from "antd";
-import { PROJECT_STATUS_COLOR_MAP, ProjectStatus } from "../../../constant/status.js";
+import {
+  PROJECT_STATUS_COLOR_MAP,
+  ProjectStatus,
+} from "../../../constant/status.js";
 export const getActionByStatus = (status, id, handlers) => {
   const {
     handleAcceptOnboard,
     handleRejectOnboard,
     handleAcceptDone,
     handleRejectDone,
+    handleAcceptReview,
   } = handlers;
-
+  status = ProjectStatus.SUBMITTED
   switch (status) {
     case ProjectStatus.REVIEWING:
       return (
@@ -44,14 +48,16 @@ export const getActionByStatus = (status, id, handlers) => {
           </Tooltip>
         </>
       );
+    case ProjectStatus.SUBMITTED:
+      return (
+        <Tooltip title="Accept review">
+          <CheckOutlined
+            className="action-icon !text-blue-500 cursor-pointer"
+            onClick={() => handleAcceptReview(id)}
+          />
+        </Tooltip>
+      );
 
-    case "Done":
-    case "Deleted":
-    case "Canceled":
-    case "Draft":
-    case "Submitted":
-    case "Onboard":
-    case "Processing":
     default:
       return null;
   }

@@ -6,25 +6,29 @@ const v2prefix = "/launchpad/api/v2/project";
 const queryProject = (body) => {
   return request.post(`${v2prefix}/query`, body);
 };
-const approveProjectForReview = async (projectId) => {
-  return request.put(`${PREFIX}/approve-review/${projectId}`);
+const approveProjectForReview = async (body) => {
+  return request.post(`${v2prefix}/approve-to-reviewing`, body);
 };
-const approveProjectForOnboarding = async (projectId) => {
-  return request.put(`${PREFIX}/approve-onboard/${projectId}`);
+const approveOnboarding = async (body) => {
+  return request.post(`${v2prefix}/submit-review`, body);
 };
-const rejectProject = (id) => {
-  return request.put(`${PREFIX}/reject/${id}`);
+const rejectOnboard = (body) => {
+  return request.post(`${v2prefix}/reject`, body);
 };
-const doneProject = (id) => {
-  return request.put(`${PREFIX}/done/${id}`);
+const approveDone = (body) => {
+  return request.post(`${v2prefix}/done`, body);
+};
+const rejectDone = (body) => {
+  return request.post(`${PREFIX}/done`, body);
 };
 
 const projectAPI = makeCommonAPI(PREFIX, {
-  approveProjectForReview,
-  approveProjectForOnboarding,
-  rejectProject,
-  doneProject,
   queryProject,
+  approveProjectForReview,
+  approveOnboarding,
+  rejectOnboard,
+  approveDone,
+  rejectDone,
 });
 
 export default projectAPI;

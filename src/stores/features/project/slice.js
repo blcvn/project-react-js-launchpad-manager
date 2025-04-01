@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import projectAPI from "../../../api/project";
+import { ProjectStatus } from "../../../constant/status";
 import { createCommonSlice } from "../../common";
 
 export const queryProject = createAsyncThunk(
@@ -14,18 +15,53 @@ export const queryProject = createAsyncThunk(
   }
 );
 
-export const approveProjectForOnboarding = createAsyncThunk(
-  `project/submit`,
+export const approveProjectForReview = createAsyncThunk(
+  `project/approveProjectForReview`,
   async (id, { rejectWithValue }) => {
     try {
-      return id;
+      const res = await projectAPI.approveProjectForReview({
+        projectId: id,
+        status: ProjectStatus.REVIEWING,
+      });
+      return res;
     } catch (err) {
       return rejectWithValue(err);
     }
   }
 );
-export const rejectProject = createAsyncThunk(
-  `project/reject`,
+export const approveOnboarding = createAsyncThunk(
+  `project/approveOnboarding`,
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await projectAPI.approveOnboarding({
+        projectId: id,
+        status: ProjectStatus.ONBOARD,
+      });
+      return res;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const rejectOnboard = createAsyncThunk(
+  `project/rejectOnboarding`,
+  async ({ id, text }, { rejectWithValue }) => {
+    try {
+      const res = await projectAPI.approveOnboarding({
+        projectId: id,
+        status: ProjectStatus.REJECTED_ONBOARD,
+        rejectReviewReason: text,
+      });
+      return res;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const approveDone = createAsyncThunk(
+  `project/approveDone`,
   async (id, { rejectWithValue }) => {
     try {
       return id;
@@ -35,8 +71,8 @@ export const rejectProject = createAsyncThunk(
   }
 );
 
-export const completeProject = createAsyncThunk(
-  `project/complete`,
+export const rejectDone = createAsyncThunk(
+  `project/rejectDone`,
   async (id, { rejectWithValue }) => {
     try {
       return id;
@@ -45,7 +81,6 @@ export const completeProject = createAsyncThunk(
     }
   }
 );
-
 export const projectSlice = createCommonSlice({
   name: "project",
   api: projectAPI,

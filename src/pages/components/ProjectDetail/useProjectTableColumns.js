@@ -1,7 +1,6 @@
 // src/components/ProjectTableColumns.jsx
 import { EyeFilled } from "@ant-design/icons";
 import { Tag, Tooltip } from "antd";
-import dayjs from "dayjs";
 import React from "react";
 import { Flex } from "../../../components/button/styled";
 import { EllipsisLongText } from "../../../components/styled/EllipsisLongText";
@@ -17,15 +16,16 @@ export const useProjectTableColumns = (handlers, params) => {
       title: "No.",
       dataIndex: "id",
       key: "id",
-      fixed: true,
+      // fixed: true,
+      width: "60px",
       render: (text, record, index) => params.page * params.size + index + 1,
     },
     {
       title: "Action",
-      dataIndex: "id",
-      key: "id",
-      fixed: true,
-
+      dataIndex: "projectId",
+      key: "projectId",
+      // fixed: true,
+      width: "100px",
       render: (id = 1, record) => (
         <Flex>
           <Tooltip title="View">
@@ -40,22 +40,11 @@ export const useProjectTableColumns = (handlers, params) => {
     },
     {
       title: "Project Name",
-      dataIndex: "projectName",
-      key: "projectName",
-      fixed: true,
+      dataIndex: "name",
+      key: "name",
+      // fixed: true,
     },
-    {
-      title: "Start Time",
-      dataIndex: "startTime",
-      key: "startTime",
-      render: (time) => dayjs(time).format("DD/MM/YYYY HH:mm:ss"),
-    },
-    {
-      title: "End Time",
-      dataIndex: "endTime",
-      key: "endTime",
-      render: (time) => dayjs(time).format("DD/MM/YYYY HH:mm:ss"),
-    },
+
     {
       title: "Status",
       dataIndex: "status",
