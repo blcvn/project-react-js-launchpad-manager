@@ -17,7 +17,7 @@ const approveOnboarding = async (body) => {
 };
 
 const approveDone = (body) => {
-  return request.post(`${v2prefix}/submit-complete`, body);
+  return request.post(`${v2prefix}/confirm-completed`, body);
 };
 
 const projectAPI = makeCommonAPI(PREFIX, {
