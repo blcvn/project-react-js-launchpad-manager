@@ -1,4 +1,4 @@
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import { Redirect, Route, Switch } from "react-router-dom";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";

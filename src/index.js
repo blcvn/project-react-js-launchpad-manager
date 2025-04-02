@@ -8,7 +8,6 @@ import ENV from "./config/env";
 import "./index.css"; // Import Tailwind CSS
 import { store } from "./stores";
 
-
 ReactDOM.render(
   <Provider store={store}>
     <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT}>
