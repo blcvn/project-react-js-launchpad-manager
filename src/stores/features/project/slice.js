@@ -17,7 +17,7 @@ export const queryProject = createAsyncThunk(
 
 export const approveProjectForReview = createAsyncThunk(
   `project/approveProjectForReview`,
-  async (id, { rejectWithValue }) => {
+  async ({ id }, { rejectWithValue }) => {
     try {
       const res = await projectAPI.approveProjectForReview({
         projectId: id,
@@ -31,7 +31,7 @@ export const approveProjectForReview = createAsyncThunk(
 );
 export const approveOnboarding = createAsyncThunk(
   `project/approveOnboarding`,
-  async (id, { rejectWithValue }) => {
+  async ({ id }, { rejectWithValue }) => {
     try {
       const res = await projectAPI.approveOnboarding({
         projectId: id,
@@ -62,9 +62,13 @@ export const rejectOnboard = createAsyncThunk(
 
 export const approveDone = createAsyncThunk(
   `project/approveDone`,
-  async (id, { rejectWithValue }) => {
+  async ({ id }, { rejectWithValue }) => {
     try {
-      return id;
+      const res = await projectAPI.approveDone({
+        projectId: id,
+        status: ProjectStatus.DONE,
+      });
+      return res;
     } catch (err) {
       return rejectWithValue(err);
     }
@@ -73,14 +77,20 @@ export const approveDone = createAsyncThunk(
 
 export const rejectDone = createAsyncThunk(
   `project/rejectDone`,
-  async (id, { rejectWithValue }) => {
+  async ({ id, text }, { rejectWithValue }) => {
     try {
-      return id;
+      const res = await projectAPI.approveDone({
+        projectId: id,
+        status: ProjectStatus.REJECTED_DONE,
+        rejectDoneReason: text,
+      });
+      return res;
     } catch (err) {
       return rejectWithValue(err);
     }
   }
 );
+
 export const projectSlice = createCommonSlice({
   name: "project",
   api: projectAPI,
@@ -99,6 +109,7 @@ export const projectSlice = createCommonSlice({
       });
   },
 });
+
 export const { fetchAll, create, update, remove, fetchById } =
   projectSlice.actions;
 

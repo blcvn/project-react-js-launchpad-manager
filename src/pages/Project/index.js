@@ -28,7 +28,7 @@ const Project = () => {
   const actionHandlers = {
     handleAcceptReview: async (id) => {
       try {
-        await dispatch(approveProjectForReview(id)).unwrap();
+        await dispatch(approveProjectForReview({ id })).unwrap();
         notification.success({
           message: "Success",
           description: `Project ${id} approved for review`,
@@ -43,7 +43,7 @@ const Project = () => {
     },
     handleAcceptOnboard: async (id) => {
       try {
-        await dispatch(approveOnboarding(id)).unwrap();
+        await dispatch(approveOnboarding({ id })).unwrap();
         notification.success({
           message: "Success",
           description: `Project ${id} approved for onboarding`,
@@ -77,7 +77,7 @@ const Project = () => {
     },
     handleAcceptDone: async (id) => {
       try {
-        await dispatch(approveDone(id)).unwrap();
+        await dispatch(approveDone({ id })).unwrap();
         notification.success({
           message: "Success",
           description: `Project ${id} completed`,
