@@ -26,12 +26,12 @@ export const useProjectTableColumns = (handlers, params) => {
       key: "projectId",
       // fixed: true,
       width: "100px",
-      render: (id = 1, record) => (
+      render: (id, record) => (
         <Flex>
           <Tooltip title="View">
             <EyeFilled
               className="cursor-pointer !text-blue-500"
-              onClick={() => handlers.handleViewDetail()}
+              onClick={() => handlers.handleViewDetail(id)}
             />
           </Tooltip>
           {getActionByStatus(record.status, id, handlers)}

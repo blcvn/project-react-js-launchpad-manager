@@ -28,7 +28,7 @@ const Project = () => {
   const actionHandlers = {
     handleAcceptReview: async (id) => {
       try {
-        const response = await dispatch(approveProjectForReview(id)).unwrap();
+        await dispatch(approveProjectForReview(id)).unwrap();
         notification.success({
           message: "Success",
           description: `Project ${id} approved for review`,
@@ -43,7 +43,7 @@ const Project = () => {
     },
     handleAcceptOnboard: async (id) => {
       try {
-        const response = await dispatch(approveOnboarding(id)).unwrap();
+        await dispatch(approveOnboarding(id)).unwrap();
         notification.success({
           message: "Success",
           description: `Project ${id} approved for onboarding`,
@@ -60,9 +60,7 @@ const Project = () => {
       rejectRef.current.show({
         callback: async (text) => {
           try {
-            const response = await dispatch(
-              rejectOnboard({ id: id, text })
-            ).unwrap();
+            await dispatch(rejectOnboard({ id: id, text })).unwrap();
             notification.success({
               message: "Success",
               description: `Project ${id} rejected for onboarding`,
@@ -79,7 +77,7 @@ const Project = () => {
     },
     handleAcceptDone: async (id) => {
       try {
-        const response = await dispatch(approveDone(id)).unwrap();
+        await dispatch(approveDone(id)).unwrap();
         notification.success({
           message: "Success",
           description: `Project ${id} completed`,
@@ -96,7 +94,7 @@ const Project = () => {
       rejectRef.current.show({
         callback: async (text) => {
           try {
-            const response = await dispatch(rejectDone({ id, text })).unwrap();
+            await dispatch(rejectDone({ id, text })).unwrap();
             notification.success({
               message: "Success",
               description: `Project ${id} rejected`,
