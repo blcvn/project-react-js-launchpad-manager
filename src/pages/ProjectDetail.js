@@ -42,7 +42,7 @@ const generateMockProject = () => ({
 });
 
 const ProjectDetail = () => {
-  const { idoAddress } = useParams();
+  const { id } = useParams();
   const [project, setProject] = useState(generateMockProject());
   const submitDocRef = useRef(null);
   const history = useHistory();
@@ -50,7 +50,7 @@ const ProjectDetail = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     setProject(generateMockProject());
-  }, [idoAddress]);
+  }, [id]);
   const rejectRef = useRef(null);
 
   const actionHandlers = {
@@ -141,7 +141,7 @@ const ProjectDetail = () => {
       <div className="flex justify-content-end mr-4">
         <Affix offsetTop={50}>
           <Button className="mr-4">
-            {getActionByStatus(project.status, idoAddress, actionHandlers)}
+            {getActionByStatus(project.status, id, actionHandlers)}
           </Button>
         </Affix>
       </div>
