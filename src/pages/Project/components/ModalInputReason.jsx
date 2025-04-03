@@ -14,7 +14,7 @@ const ModalInputReason = (_, ref) => {
   useImperativeHandle(ref, () => ({
     show: ({ callback, id }) => {
       callbackRef.current = callback;
-      setState({ visible: true, comment: `Project ID: ${id}` });
+      setState({ visible: true });
     },
     hide: () => resetState(),
   }));
