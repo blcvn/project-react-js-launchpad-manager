@@ -1,6 +1,6 @@
 // src/components/ProjectTableColumns.jsx
 import { EyeFilled } from "@ant-design/icons";
-import { Tag, Tooltip } from "antd";
+import { Tag, Tooltip, Image } from "antd";
 import React from "react";
 import { Flex } from "../../../components/button/styled";
 import { EllipsisLongText } from "../../../components/styled/EllipsisLongText";
@@ -44,6 +44,23 @@ export const useProjectTableColumns = (handlers, params) => {
       key: "name",
       // fixed: true,
     },
+    {
+      title: "Logo",
+      dataIndex: "icon",
+      key: "icon",
+      render: (icon = {}) =>
+        icon.content &&
+        icon.contentType && (
+          <Image
+            src={[icon.contentType, icon.content].join(",")}
+            alt="logo"
+            width={50}
+            preview={false}
+          />
+        ),
+      responsive: ["md"],
+    },
+    { title: "Owner", dataIndex: "owner", key: "owner" },
 
     {
       title: "Status",
@@ -56,6 +73,12 @@ export const useProjectTableColumns = (handlers, params) => {
       ),
     },
     {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+      responsive: ["md"],
+    },
+    {
       title: "Description",
       dataIndex: "description",
       key: "description",
@@ -66,15 +89,15 @@ export const useProjectTableColumns = (handlers, params) => {
       ),
     },
 
-    {
-      title: "PDF",
-      dataIndex: "pdf",
-      key: "pdf",
-      render: (text, record) => (
-        <a href={record.pdf} target="_blank" rel="noopener noreferrer">
-          View PDF
-        </a>
-      ),
-    },
+    // {
+    //   title: "PDF",
+    //   dataIndex: "pdf",
+    //   key: "pdf",
+    //   render: (text, record) => (
+    //     <a href={record.pdf} target="_blank" rel="noopener noreferrer">
+    //       View PDF
+    //     </a>
+    //   ),
+    // },
   ];
 };

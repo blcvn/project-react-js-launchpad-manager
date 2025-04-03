@@ -71,7 +71,7 @@ function Header({
         <Col span={24} md={6}>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <NavLink to="/">Pages</NavLink>
+              <NavLink to="/">Manager</NavLink>
             </Breadcrumb.Item>
             <Breadcrumb.Item style={{ textTransform: "capitalize" }}>
               {name.replace("/", "")}
@@ -93,7 +93,7 @@ function Header({
                 items: [
                   {
                     key: "1",
-                    label: <label onClick={handleLogout}>Disconnect</label>,
+                    label: <label onClick={handleLogout}>Logout</label>,
                     extra: "⌘P",
                   },
                 ],
@@ -104,7 +104,7 @@ function Header({
                 <img
                   alt=""
                   src="https://avatar.iran.liara.run/public"
-                  style={{ width: "20px", height: "20px", cursor: "pointer" }}
+                  style={{ width: "50px", height: "50px", cursor: "pointer" }}
                 />
               </div>
             </Dropdown>
