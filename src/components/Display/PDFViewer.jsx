@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
@@ -16,8 +17,7 @@ const PDFViewer = ({ file }) => {
   };
 
   const goToPrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const goToNextPage = () =>
-    setCurrentPage((prev) => Math.min(prev + 1, numPages));
+  const goToNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, numPages));
 
   return (
     <div>
@@ -43,6 +43,10 @@ const PDFViewer = ({ file }) => {
       )}
     </div>
   );
+};
+
+PDFViewer.propTypes = {
+  file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default PDFViewer;

@@ -39,8 +39,8 @@ function UserList({ title, users = [] }) {
 UserList.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
-      username: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
+      username: PropTypes.string,
+      email: PropTypes.string,
     })
   ),
   title: PropTypes.string,

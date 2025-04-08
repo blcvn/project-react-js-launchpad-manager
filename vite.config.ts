@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [react()],
   esbuild: {
     loader: "jsx",
-    include: /src\/.*\.js$/, // Apply JSX loader to all .js files in src/
+    include: /src\/.*\.js$/,
+  },
+  server: {
+    port: 3000,
   },
 });
