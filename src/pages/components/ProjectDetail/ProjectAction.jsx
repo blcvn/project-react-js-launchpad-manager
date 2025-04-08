@@ -3,7 +3,7 @@ import { Tag, Tooltip } from "antd";
 import {
   PROJECT_STATUS_COLOR_MAP,
   ProjectStatus,
-} from "../../../constant/status.js";
+} from "../../../constant/status";
 export const getActionByStatus = (status, id, handlers) => {
   const {
     handleAcceptOnboard,
