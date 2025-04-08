@@ -2,8 +2,8 @@ import { Affix, Button, notification } from "antd";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { ROUTES_PATH } from "../constant/path.js";
-import { ProjectStatus } from "../constant/status.js";
+import { ROUTES_PATH } from "../constant/path";
+import { ProjectStatus } from "../constant/status";
 import {
   approveDone,
   approveOnboarding,
@@ -12,11 +12,11 @@ import {
   rejectDone,
   rejectOnboard,
 } from "../stores/features/project/slice";
-import { Base64ToFile } from "../utils/string.js";
-import { getActionByStatus } from "./components/ProjectDetail/ProjectAction.js";
-import ProjectInfo from "./components/ProjectDetail/ProjectInfo.js";
-import UserList from "./components/ProjectDetail/UseList.js";
-import ModalInputReason from "./Project/components/ModalInputReason.jsx";
+import { Base64ToFile } from "../utils/string";
+import { getActionByStatus } from "./components/ProjectDetail/ProjectAction";
+import ProjectInfo from "./components/ProjectDetail/ProjectInfo";
+import UserList from "./components/ProjectDetail/UseList";
+import ModalInputReason from "./Project/components/ModalInputReason";
 
 const ProjectDetail = () => {
   const { id } = useParams();

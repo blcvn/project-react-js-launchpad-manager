@@ -1,9 +1,12 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf/dist/esm/entry.webpack";
+import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 const PDFViewer = ({ file }) => {
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,8 +17,7 @@ const PDFViewer = ({ file }) => {
   };
 
   const goToPrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const goToNextPage = () =>
-    setCurrentPage((prev) => Math.min(prev + 1, numPages));
+  const goToNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, numPages));
 
   return (
     <div>
@@ -41,6 +43,10 @@ const PDFViewer = ({ file }) => {
       )}
     </div>
   );
+};
+
+PDFViewer.propTypes = {
+  file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default PDFViewer;
