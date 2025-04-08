@@ -1,6 +1,5 @@
-// src/components/ProjectTableColumns.jsx
 import { EyeFilled } from "@ant-design/icons";
-import { Tag, Tooltip } from "antd";
+import { Image, Tag, Tooltip } from "antd";
 import React from "react";
 import { Flex } from "../../../components/button/styled";
 import { EllipsisLongText } from "../../../components/styled/EllipsisLongText";
@@ -16,16 +15,12 @@ export const useProjectTableColumns = (handlers, params) => {
       title: "No.",
       dataIndex: "id",
       key: "id",
-      // fixed: true,
-      width: "60px",
       render: (text, record, index) => params.page * params.size + index + 1,
     },
     {
       title: "Action",
       dataIndex: "projectId",
       key: "projectId",
-      // fixed: true,
-      width: "100px",
       render: (id, record) => (
         <Flex>
           <Tooltip title="View">
@@ -42,9 +37,35 @@ export const useProjectTableColumns = (handlers, params) => {
       title: "Project Name",
       dataIndex: "name",
       key: "name",
-      // fixed: true,
+    },
+    {
+      title: "Logo",
+      dataIndex: "icon",
+      key: "icon",
+      render: (icon = {}) =>
+        icon.content &&
+        icon.contentType && (
+          <Image
+            src={[icon.contentType, icon.content].join(",")}
+            alt="logo"
+            width={50}
+            preview={false}
+          />
+        ),
+      responsive: ["md"],
     },
 
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      render: (description) => (
+        <div style={{ maxWidth: "200px" }}>
+          <EllipsisLongText>{description}</EllipsisLongText>
+        </div>
+      ),
+    },
+    { title: "Owner", dataIndex: "owner", key: "owner" }, // Translated title
     {
       title: "Status",
       dataIndex: "status",
@@ -56,6 +77,12 @@ export const useProjectTableColumns = (handlers, params) => {
       ),
     },
     {
+      title: "Amount", // Translated title
+      dataIndex: "amount",
+      key: "amount",
+      responsive: ["md"],
+    },
+    {
       title: "Description",
       dataIndex: "description",
       key: "description",
@@ -63,17 +90,6 @@ export const useProjectTableColumns = (handlers, params) => {
         <div style={{ maxWidth: "200px" }}>
           <EllipsisLongText>{description}</EllipsisLongText>
         </div>
-      ),
-    },
-
-    {
-      title: "PDF",
-      dataIndex: "pdf",
-      key: "pdf",
-      render: (text, record) => (
-        <a href={record.pdf} target="_blank" rel="noopener noreferrer">
-          View PDF
-        </a>
       ),
     },
   ];

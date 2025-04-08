@@ -15,6 +15,21 @@ export const queryProject = createAsyncThunk(
   }
 );
 
+export const queryProjectById = createAsyncThunk(
+  `project/query-by-id`,
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const res = await projectAPI.queryProjectById({
+        projectId: id,
+        isGetDetail: true,
+      });
+      return res;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 export const approveProjectForReview = createAsyncThunk(
   `project/approveProjectForReview`,
   async ({ id }, { rejectWithValue }) => {

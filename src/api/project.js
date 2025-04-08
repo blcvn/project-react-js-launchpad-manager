@@ -8,6 +8,10 @@ const queryProject = (body) => {
   return request.post(`${v2prefix}/query`, body);
 };
 
+const queryProjectById = (body) => {
+  return request.post(`${v2prefix}/query`, body);
+};
+
 const approveProjectForReview = async (body) => {
   return request.post(`${v2prefix}/approve-to-reviewing`, body);
 };
@@ -25,6 +29,7 @@ const projectAPI = makeCommonAPI(PREFIX, {
   approveProjectForReview,
   approveOnboarding,
   approveDone,
+  queryProjectById,
 });
 
 export default projectAPI;

@@ -1,6 +1,5 @@
-import { faker } from "@faker-js/faker";
 import { Affix, Button, notification } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { ROUTES_PATH } from "../constant/path.js";
@@ -9,48 +8,23 @@ import {
   approveDone,
   approveOnboarding,
   approveProjectForReview,
+  queryProjectById,
   rejectDone,
   rejectOnboard,
 } from "../stores/features/project/slice";
-import ModalSubmitDocument from "./components/ProjectDetail/ModelSubmitDocument.js";
+import { Base64ToFile } from "../utils/string.js";
 import { getActionByStatus } from "./components/ProjectDetail/ProjectAction.js";
 import ProjectInfo from "./components/ProjectDetail/ProjectInfo.js";
+import UserList from "./components/ProjectDetail/UseList.js";
 import ModalInputReason from "./Project/components/ModalInputReason.jsx";
-
-const generateMockProject = () => ({
-  name: faker.company.name(),
-  description: faker.lorem.sentence(),
-  icon: { filename: "icon.png", content: faker.image.avatar() },
-  owner: faker.internet.email(),
-  token_address: faker.finance.ethereumAddress(),
-  address: faker.finance.ethereumAddress(),
-  contributors: Array.from({ length: 3 }, () => ({
-    username: faker.internet.userName(),
-    email: faker.internet.email(),
-  })),
-  donators: Array.from({ length: 2 }, () => ({
-    username: faker.internet.userName(),
-    email: faker.internet.email(),
-  })),
-  infos: [{ filename: "info1.pdf", content: "PDF Content" }],
-  completed_infos: [
-    { filename: "completed_info1.pdf", content: "PDF Content" },
-  ],
-  reject_review_reason: faker.lorem.sentence(),
-  reject_done_reason: faker.lorem.sentence(),
-  status: faker.helpers.arrayElement(Object.values(ProjectStatus)),
-});
 
 const ProjectDetail = () => {
   const { id } = useParams();
-  const [project, setProject] = useState(generateMockProject());
-  const submitDocRef = useRef(null);
+  const [project, setProject] = useState({});
   const history = useHistory();
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    setProject(generateMockProject());
-  }, [id]);
+
   const rejectRef = useRef(null);
 
   const actionHandlers = {
@@ -136,23 +110,78 @@ const ProjectDetail = () => {
       history.push(`${ROUTES_PATH.PROJECT}/${id}`);
     },
   };
+
+  const fetchData = useCallback(async () => {
+    const response = await dispatch(queryProjectById({ id: id })).unwrap();
+    const data = response?.projects?.[0];
+    if (data) {
+      const file = Base64ToFile(
+        `${data.icon.contentType},${data.icon.content}`,
+        data.icon.filename
+      );
+      const logoFileList = [
+        {
+          uid: "-1",
+          name: file.name,
+          originFileObj: file,
+          thumbUrl: `${data.icon.contentType},${data.icon.content}`,
+          status: "done", // Ensure the file shows as uploaded
+        },
+      ];
+      const pdfFiles = data.infos.map((item, index) => {
+        const file = Base64ToFile(
+          `${item.content_type},${item.content}`,
+          item.filename
+        );
+        return {
+          uid: index,
+          name: file.name,
+          originFileObj: file,
+          status: "done",
+          type: "application/pdf",
+        };
+      });
+      setProject({
+        ...data,
+        logoFile: logoFileList,
+        pdfFiles: pdfFiles,
+      });
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   return (
-    <div>
-      <div className="flex justify-content-end mr-4">
-        <Affix offsetTop={50}>
-          <Button className="mr-4">
-            {getActionByStatus(project.status, id, actionHandlers)}
-          </Button>
-        </Affix>
-      </div>
-      <div className="mx-auto p-6 bg-gray-50 min-h-screen">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-6">
-          <div className="lg:col-span-3 bg-white shadow-md rounded-lg p-6">
+    <div className="border-2 border-gray-200 bg-white rounded-lg shadow-md">
+      {[
+        ProjectStatus.REVIEWING,
+        ProjectStatus.COMPLETED,
+        ProjectStatus.SUBMITTED,
+      ].includes(project.status) && (
+        <div className="flex justify-end mr-4">
+          <Affix offsetTop={50}>
+            <Button className="mr-4">
+              {getActionByStatus(project.status, id, actionHandlers)}
+            </Button>
+          </Affix>
+        </div>
+      )}
+
+      <div className="mx-auto p-6 min-h-screen">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
+          <div className="col-span-2 rounded-lg p-6">
             <ProjectInfo project={project} />
+          </div>
+          <div className="col-span-1">
+            <UserList title={"Contributors"} users={project.contributors} />
+          </div>
+          <div className="col-span-1">
+            <UserList title={"Donators"} users={project.donators} />
           </div>
         </div>
       </div>
-      <ModalSubmitDocument ref={submitDocRef} />
       <ModalInputReason ref={rejectRef} />
     </div>
   );
