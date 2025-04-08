@@ -128,23 +128,10 @@ const ProjectDetail = () => {
           status: "done", // Ensure the file shows as uploaded
         },
       ];
-      const pdfFiles = data.infos.map((item, index) => {
-        const file = Base64ToFile(
-          `${item.content_type},${item.content}`,
-          item.filename
-        );
-        return {
-          uid: index,
-          name: file.name,
-          originFileObj: file,
-          status: "done",
-          type: "application/pdf",
-        };
-      });
+
       setProject({
         ...data,
         logoFile: logoFileList,
-        pdfFiles: pdfFiles,
       });
     }
   }, [dispatch, id]);

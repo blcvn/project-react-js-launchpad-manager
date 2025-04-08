@@ -1707,9 +1707,9 @@ ul.ant-menu.ant-menu-root.ant-menu-inline.ant-menu-light.left-nav
   height: 100%;
 }
 @media (min-width: 1200px) {
-  .ant-col.col-img img {
+  /* .ant-col.col-img img {
     height: 196px;
-  }
+  } */
   /* .bar-chart {
     max-width: 438px;
   } */

@@ -1,25 +1,33 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 
-import { Descriptions, Divider, List, Space, Typography } from "antd";
+import { Descriptions, Divider, Image, List, Space, Typography } from "antd";
 import PreviewPDFModal from "../../../components/Modal/PreviewPDFModal";
 import { Base64ToFile } from "../../../utils/string";
 const { Title, Text } = Typography;
 
 const ProjectInfo = ({ project = {} }) => {
   const [previewFile, setPreviewFile] = useState(null);
-
-  const handlePreview = (info) => {
-    const file = Base64ToFile(
-      `${info.content_type},${info.content}`,
-      info.filename
-    );
-
-    setPreviewFile(file);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const handleFilePreview = (info) => () => {
+    const filename = info.filename;
+    if (filename.endsWith(".pdf")) {
+      setPreviewFile(
+        Base64ToFile(`${info.content_type},${info.content}`, info.filename)
+      );
+      return;
+    }
+    if (filename.endsWith(".png") || filename.endsWith(".jpg")) {
+      setPreviewImage(
+        `${info.content_type || "data:image/png;base64"},${info.content}`
+      );
+      setPreviewOpen(true);
+    }
   };
-
+  console.log(previewImage);
   return (
-    <div >
+    <div>
       <h2 className="text-3xl font-bold text-[var(--primary-color)] mb-6 text-center">
         Project information
       </h2>
@@ -55,7 +63,7 @@ const ProjectInfo = ({ project = {} }) => {
               dataSource={project.infos}
               renderItem={(info) => (
                 <List.Item
-                  actions={[<a onClick={() => handlePreview(info)}>Preview</a>]}
+                  actions={[<a onClick={handleFilePreview(info)}>Preview</a>]}
                 >
                   <Text>{info.filename}</Text>
                 </List.Item>
@@ -68,13 +76,13 @@ const ProjectInfo = ({ project = {} }) => {
 
         <div>
           <Title level={4}>Completed Files</Title>
-          {project.completed_infos?.length > 0 ? (
+          {project.completedInfos?.length > 0 ? (
             <List
               bordered
-              dataSource={project.completed_infos}
+              dataSource={project.completedInfos}
               renderItem={(info) => (
                 <List.Item
-                  actions={[<a onClick={() => handlePreview(info)}>Preview</a>]}
+                  actions={[<a onClick={handleFilePreview(info)}>Preview</a>]}
                 >
                   <Text>{info.filename}</Text>
                 </List.Item>
@@ -112,6 +120,18 @@ const ProjectInfo = ({ project = {} }) => {
         file={previewFile}
         onClose={() => setPreviewFile(null)}
       />
+      {previewImage && (
+        <Image
+          wrapperStyle={{ display: "none" }}
+          preview={{
+            visible: previewOpen,
+            onVisibleChange: (visible) => setPreviewOpen(visible),
+            afterOpenChange: (visible) => !visible && setPreviewImage(""),
+          }}
+          src={previewImage}
+          
+        />
+      )}
     </div>
   );
 };
