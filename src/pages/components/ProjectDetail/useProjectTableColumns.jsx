@@ -65,7 +65,7 @@ export const useProjectTableColumns = (handlers, params) => {
         </div>
       ),
     },
-    { title: "Owner", dataIndex: "owner", key: "owner" }, // Translated title
+    { title: "Owner", dataIndex: ["owner", "username"], key: "owner" }, // Translated title
     {
       title: "Status",
       dataIndex: "status",

@@ -45,7 +45,7 @@ const ProjectInfo = ({ project = {} }) => {
         </div>
 
         <Descriptions bordered column={1}>
-          <Descriptions.Item label="Owner">{project.owner}</Descriptions.Item>
+          <Descriptions.Item label="Owner">{project?.owner?.username}</Descriptions.Item>
           <Descriptions.Item label="Project Name">
             {project.name}
           </Descriptions.Item>
