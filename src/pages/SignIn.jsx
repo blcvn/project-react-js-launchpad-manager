@@ -12,9 +12,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import signinbg from "../assets/images/img-signin.jpg";
+import { ROUTES_PATH } from "../constant/path";
 import { login } from "../stores/features/auth/slice";
 import GoogleLoginButton from "./components/GoogleLoginButton";
-import { ROUTES_PATH } from "../constant/path";
 
 const { Title } = Typography;
 const { Content } = Layout;
@@ -23,7 +23,7 @@ class SignIn extends Component {
   onFinish = (values) => {
     this.props.login(values).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        this.props.history.push(`${ROUTES_PATH.PROFILE}`);
+        this.props.history.push(`${ROUTES_PATH.USER}`);
       }
     });
   };

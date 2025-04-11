@@ -93,7 +93,12 @@ function Header({
                 items: [
                   {
                     key: "1",
-                    label: <label onClick={handleLogout}>Disconnect</label>,
+                    label: <label>Your Profile</label>,
+                    extra: "⌘P",
+                  },
+                  {
+                    key: "2",
+                    label: <label onClick={handleLogout}>Logout</label>,
                     extra: "⌘P",
                   },
                 ],
