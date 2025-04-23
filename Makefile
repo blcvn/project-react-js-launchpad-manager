@@ -1,5 +1,5 @@
 ENV=staging
-BUILD_PATH=./build
+BUILD_PATH=./dist
 HOST=10.10.141.52
 CONTAINER_NAME=manager
 

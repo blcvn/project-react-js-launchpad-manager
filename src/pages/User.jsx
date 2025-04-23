@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   Col,
   Form,
@@ -90,13 +89,13 @@ function User() {
               className="criclebox tablespace p-15"
               title="User List"
             >
-              <Row justify="end">
+              {/* <Row justify="end">
                 <Col>
                   <Button type="primary" onClick={handleCreateReviewer}>
                     Create new reviewer
                   </Button>
                 </Col>
-              </Row>
+              </Row> */}
 
               <div className="table-responsive">
                 <Table
