@@ -45,6 +45,7 @@ const request = {
       headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
     });
   },
+
 };
 
 axiosClient.interceptors.request.use(
@@ -61,12 +62,12 @@ axiosClient.interceptors.response.use(
   (response) => response.data,
   (error) => {
     // console.error("API Error:", error);
-    // if (error.response.status === 401 || error.response.status === 403) {
-    //   request.removeToken();
-    //   if (window.location.pathname !== "/sign-in") {
-    //     window.location.href = "/sign-in";
-    //   }
-    // }
+    if (error.response.status === 401 || error.response.status === 403) {
+      request.removeToken();
+      if (window.location.pathname !== "/sign-in") {
+        window.location.href = "/sign-in";
+      }
+    }
     return Promise.reject(error.response?.data || error.message);
   }
 );
