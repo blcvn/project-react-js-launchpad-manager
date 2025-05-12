@@ -43,8 +43,8 @@ export const useProjectTableColumns = (handlers, params) => {
       dataIndex: "icon",
       key: "icon",
       render: (icon = {}) =>
-        icon.content &&
-        icon.contentType && (
+        icon?.content &&
+        icon?.contentType && (
           <Image
             src={[icon.contentType, icon.content].join(",")}
             alt="logo"
