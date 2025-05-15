@@ -116,9 +116,7 @@ const Project = () => {
   const columns = useProjectTableColumns(actionHandlers, params);
   const fetchData = useCallback(() => {
     dispatch(
-      queryProject({
-        // status: "DRAFT",
-      })
+      queryProject(params)
     );
   }, [dispatch]);
 
@@ -133,7 +131,7 @@ const Project = () => {
         params={params}
         loading={status === "loading"}
         setParams={handleSetParams}
-        clientSearch={true}
+        rowKey="id"
       />
       <ModalInputReason ref={rejectRef} />
     </div>

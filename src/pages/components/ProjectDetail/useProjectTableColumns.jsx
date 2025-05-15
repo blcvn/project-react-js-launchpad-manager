@@ -19,8 +19,8 @@ export const useProjectTableColumns = (handlers, params) => {
     },
     {
       title: "Action",
-      dataIndex: "projectId",
-      key: "projectId",
+      dataIndex: "id",
+      key: "id",
       render: (id, record) => (
         <Flex>
           <Tooltip title="View">
@@ -82,15 +82,15 @@ export const useProjectTableColumns = (handlers, params) => {
       key: "amount",
       responsive: ["md"],
     },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (description) => (
-        <div style={{ maxWidth: "200px" }}>
-          <EllipsisLongText>{description}</EllipsisLongText>
-        </div>
-      ),
-    },
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   render: (description) => (
+    //     <div style={{ maxWidth: "200px" }}>
+    //       <EllipsisLongText>{description}</EllipsisLongText>
+    //     </div>
+    //   ),
+    // },
   ];
 };

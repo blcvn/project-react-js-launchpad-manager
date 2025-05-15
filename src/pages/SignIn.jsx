@@ -1,16 +1,11 @@
 import {
-  Button,
   Col,
-  Form,
-  Input,
   Layout,
   Row,
-  Switch,
-  Typography,
+  Typography
 } from "antd";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import signinbg from "../assets/images/img-signin.jpg";
 import { ROUTES_PATH } from "../constant/path";
 import { login } from "../stores/features/auth/slice";
@@ -54,7 +49,7 @@ class SignIn extends Component {
                 >
                   <GoogleLoginButton />
                 </div>
-                <Form
+                {/* <Form
                   onFinish={this.onFinish}
                   layout="vertical"
                   className="row-col"
@@ -116,7 +111,7 @@ class SignIn extends Component {
                       Sign Up
                     </Link>
                   </p>
-                </Form>
+                </Form> */}
               </Col>
               <Col
                 className="sign-img"

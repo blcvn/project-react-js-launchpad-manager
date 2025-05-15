@@ -1,8 +1,9 @@
 import request from "../utils/request";
 const PREFIX = "/launchpad/api/v1/user";
+const V3_PREFIX = "/launchpad/api/v3/user";
 
 const search = ({ page, size }) => {
-  return request.get(`${PREFIX}`, { page, size });
+  return request.get(`${V3_PREFIX}/search`, { page, size });
 };
 
 const create = ({ email, password, name }) => {

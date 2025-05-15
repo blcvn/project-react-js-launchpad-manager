@@ -1,10 +1,10 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "antd";
-import logo3 from "../../assets/images/Google__G__Logo.svg.png";
-import { loginWithGoogle } from "../../stores/features/auth/slice";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import logo3 from "../../assets/images/Google__G__Logo.svg.png";
 import { ROUTES_PATH } from "../../constant/path";
+import { loginWithGoogle } from "../../stores/features/auth/slice";
 const GoogleLoginButton = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -17,7 +17,7 @@ const GoogleLoginButton = () => {
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setTimeout(() => {
-            history.push(`${ROUTES_PATH.PROFILE}`);
+            history.push(`${ROUTES_PATH.USER}`);
           }, 500);
         }
       });

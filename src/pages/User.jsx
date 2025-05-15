@@ -6,24 +6,17 @@ import {
   Modal,
   Pagination,
   Row,
-  Table,
-  Tag
+  Table
 } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createReviewer, search, setParams } from "../stores/features/user/slice";
 
-const roleColors = {
-  1: { text: "Admin", color: "red" },
-  2: { text: "User", color: "blue" },
-  3: { text: "Reviewer", color: "green" },
-};
-
 const columns = [
   {
     title: "Name",
-    dataIndex: "name",
-    key: "name",
+    dataIndex: "full_name",
+    key: "full_name",
     width: "32%",
   },
   {
@@ -34,11 +27,7 @@ const columns = [
   {
     title: "Role",
     key: "role",
-    dataIndex: "role",
-    render: (role) => {
-      const roleInfo = roleColors[role] || { text: "Unknown", color: "gray" };
-      return <Tag color={roleInfo.color}>{roleInfo.text}</Tag>;
-    },
+    dataIndex: "role_id",
   },
 ];
 

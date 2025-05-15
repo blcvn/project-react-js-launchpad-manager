@@ -2,26 +2,27 @@ import request from "../utils/request";
 import { makeCommonAPI } from "./common";
 
 const PREFIX = "/launchpad/api/v1/project";
-const v2prefix = "/launchpad/api/v2/project";
+const V2_PREFIX = "/launchpad/api/v2/project";
+const V3_PREFIX = "/launchpad/api/v3";
 
-const queryProject = (body) => {
-  return request.post(`${v2prefix}/query`, body);
+const queryProject = (params) => {
+  return request.get(`${V3_PREFIX}/admin/list-project`, params);
 };
 
 const queryProjectById = (body) => {
-  return request.post(`${v2prefix}/query`, body);
+  return request.post(`${V2_PREFIX}/query`, body);
 };
 
 const approveProjectForReview = async (body) => {
-  return request.post(`${v2prefix}/approve-to-reviewing`, body);
+  return request.post(`${V3_PREFIX}/projects/submit-review`, body);
 };
 
 const approveOnboarding = async (body) => {
-  return request.post(`${v2prefix}/submit-review`, body);
+  return request.post(`${V3_PREFIX}/projects/change-status`, body);
 };
 
 const approveDone = (body) => {
-  return request.post(`${v2prefix}/confirm-completed`, body);
+  return request.post(`${V2_PREFIX}/confirm-completed`, body);
 };
 
 const projectAPI = makeCommonAPI(PREFIX, {

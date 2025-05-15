@@ -5,9 +5,11 @@ import { createCommonSlice } from "../../common";
 
 export const queryProject = createAsyncThunk(
   `project/query`,
-  async (body, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const res = await projectAPI.queryProject(body);
+      const cloneParams = { page: params.page, limit: params.size+10 };
+
+      const res = await projectAPI.queryProject(cloneParams);
       return res;
     } catch (err) {
       return rejectWithValue(err);
@@ -35,7 +37,7 @@ export const approveProjectForReview = createAsyncThunk(
   async ({ id }, { rejectWithValue }) => {
     try {
       const res = await projectAPI.approveProjectForReview({
-        projectId: id,
+        project_id: id,
         status: ProjectStatus.REVIEWING,
       });
       return res;
@@ -49,7 +51,7 @@ export const approveOnboarding = createAsyncThunk(
   async ({ id }, { rejectWithValue }) => {
     try {
       const res = await projectAPI.approveOnboarding({
-        projectId: id,
+        project_id: id,
         status: ProjectStatus.ONBOARD,
       });
       return res;
@@ -64,9 +66,9 @@ export const rejectOnboard = createAsyncThunk(
   async ({ id, text }, { rejectWithValue }) => {
     try {
       const res = await projectAPI.approveOnboarding({
-        projectId: id,
+        project_id: id,
         status: ProjectStatus.REJECTED_ONBOARD,
-        rejectReviewReason: text,
+        description : text,
       });
       return res;
     } catch (err) {
@@ -80,7 +82,7 @@ export const approveDone = createAsyncThunk(
   async ({ id }, { rejectWithValue }) => {
     try {
       const res = await projectAPI.approveDone({
-        projectId: id,
+        project_id: id,
         status: ProjectStatus.DONE,
       });
       return res;
@@ -97,7 +99,7 @@ export const rejectDone = createAsyncThunk(
       const res = await projectAPI.approveDone({
         projectId: id,
         status: ProjectStatus.REJECTED_DONE,
-        rejectDoneReason: text,
+        description : text,
       });
       return res;
     } catch (err) {
@@ -116,7 +118,7 @@ export const projectSlice = createCommonSlice({
       })
       .addCase(queryProject.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data = action.payload.projects;
+        state.data = action.payload.data;
       })
       .addCase(queryProject.rejected, (state, action) => {
         state.status = "failed";

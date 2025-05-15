@@ -9,7 +9,7 @@ const loadUserFromLocalStorage = () => {
 
   if (storedData) {
     const user = JSON.parse(storedData).user;
-    request.token = user.accessToken;
+    request.token = user.access_token;
     return user;
   } else {
     return null;
@@ -22,7 +22,7 @@ export const login = createAsyncThunk(
     try {
       const res = await authAPI.login(values);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ user: res }));
-      request.token = res.accessToken;
+      request.token = res.access_token;
       notification.success({ message: "Login successful" });
       return res;
     } catch (err) {
@@ -39,7 +39,7 @@ export const loginWithGoogle = createAsyncThunk(
     try {
       const res = await authAPI.loginWithGoogle(values);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ user: res }));
-      request.token = res.accessToken;
+      request.token = res.access_token;
       notification.success({ message: "Login successful" });
       return res;
     } catch (err) {
